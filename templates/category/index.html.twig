@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Atelier Desk Category
+{% endblock %}
+
+{% block body %}
+
+	<div class="container mt-2">
+		{% if not categories.items is same as([]) %}
+			{# condition pour montrer une reponse si'l n'ai pas de categories #}
+			<h1>Categories</h1>
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nom</th>
+					</tr>
+				</thead>
+				<tbody>
+
+					{% for category in categories %}
+						<tr class="table-primary">
+							<th scope="row">{{category.id}}</th>
+							<td>{{category.name}}</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{# display navigation #}
+			<div class="navigation">
+				{{ knp_pagination_render(categories) }}
+			</div>
+		{% else %}
+			<h4>Il n'y a pas d'ingrédients</h4>
+			{# <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
+				Créer un ingrédient
+			</a> #}
+		{% endif %}
+
+	</div>
+
+{% endblock %}

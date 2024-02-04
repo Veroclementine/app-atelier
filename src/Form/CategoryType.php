@@ -35,7 +35,7 @@ class CategoryType extends AbstractType
                 'attr' => [
                     'class' => 'btn btn-primary mt-4'
                 ],
-                'label' => 'Créer nouvelle Categorie'
+                'label' => 'envoyer'
             ]);
 
     }

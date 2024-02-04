@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class CategoryController extends AbstractController
 {
     /**
-     * this function display all categories
+     * this function or controller display all categories
      *
      * @param CategoryRepository $categoryRepository
      * @param PaginatorInterface $paginator
@@ -24,7 +24,11 @@ class CategoryController extends AbstractController
      * @return Response
      */
     #[Route('/category', name: 'app_category', methods: ['GET'])]
-    public function index(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
+    public function index(
+        CategoryRepository $categoryRepository, 
+        PaginatorInterface $paginator, 
+        Request $request
+        ): Response
     {
 
         $categories = $paginator->paginate(
@@ -38,10 +42,22 @@ class CategoryController extends AbstractController
             'categories' => $categories
         ]);
     }
-    //function new category pour le formulaire
+
+    /**
+     * Controller show a form for create a new category
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
+
     #[Route('/category/newCategory', name: 'app_category_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $manager): Response
+    public function new(
+        Request $request, 
+        EntityManagerInterface $manager
+        ): Response
     {
+        // create notre formulaire
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
 
@@ -67,4 +83,55 @@ class CategoryController extends AbstractController
             ]
         );
     }
-}
+    
+
+    #[Route('/category/edition/{id}', name: 'app_category_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        CategoryRepository $categoryRepository, 
+        int $id, 
+        Request $request, 
+        EntityManagerInterface $manager): Response
+    {
+        $category = $categoryRepository->findOneBy(["id" => $id]);
+
+        $form = $this->createForm(CategoryType::class, $category);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $category = $form->getData();
+
+            $manager->persist($category);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Votre categorie a été modifié avec succès !'
+            );
+
+            return $this->redirectToRoute('app_category');
+        }
+
+        return $this->render('category/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+
+
+    #[Route('/category/delete/{id}', name: 'app_category_delete', methods: ['GET'])]
+    public function delete(
+    EntityManagerInterface $manager,
+    CategoryRepository $categoryRepository, 
+    int $id, 
+        ): Response
+    {
+            $category = $categoryRepository->findOneBy(["id" => $id]);
+            $manager->remove($category);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Votre catégorie a été supprimée !'
+            );
+
+            return $this->redirectToRoute('app_category');
+        }
+
+    }
+

@@ -5,15 +5,31 @@
 
 {% block body %}
 
-	<div class="container mt-2">
+	<div class="container mt-4">
+		{# condition pour montrer une reponse si'l n'ai pas de categories #}
 		{% if not categories.items is same as([]) %}
-			{# condition pour montrer une reponse si'l n'ai pas de categories #}
 			<h1>Categories</h1>
+
+			{# Button pour creer une category #}
+			<a href="{{path('app_category_new')}}" class="btn btn-primary">
+				Créer une Categorie</a>
+
+			{# Flash message votre category a ete cree avec succes #}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-succes">
+					{{ message }}
+				</div>
+			{% endfor %}
+
+
 			<table class="table table-hover mt-4">
 				<thead>
 					<tr>
 						<th scope="col">ID</th>
 						<th scope="col">Nom</th>
+						<th scope="col">Edition</th>
+						<th scope="col">Suppresion</th>
+
 					</tr>
 				</thead>
 				<tbody>
@@ -22,6 +38,14 @@
 						<tr class="table-primary">
 							<th scope="row">{{category.id}}</th>
 							<td>{{category.name}}</td>
+							<td>
+							<a href="{{ path ('app_category_edit', {id:category.id}) }}" class="btn btn-info">Modifier</a>
+							</td>
+							<td>
+							<a href="{{ path ('app_category_delete', {id:category.id}) }}" class="btn btn-warning">Supprimer</a>
+						
+							</td>
+
 						</tr>
 					{% endfor %}
 				</tbody>
@@ -34,8 +58,8 @@
 		{% else %}
 			<h4>Il n'y a pas d'ingrédients</h4>
 			{# <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
-				Créer un ingrédient
-			</a> #}
+																			Créer un ingrédient
+																		</a> #}
 		{% endif %}
 
 	</div>

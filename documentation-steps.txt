@@ -1,14 +1,18 @@
-1- User 
+1- User     - Admin et Technicien
     - id
     - name
     - lastname
     - email
     - password
+	-createdAt
 
 2- Ticket
     - name 
     - description
     - categories
+	-created At
+	-update At
+	-priority (agregue una constraint para que sea entre 1 y 3)
 
     
 3- Category
@@ -22,6 +26,7 @@
 	
 	
 	Symfony relations - Mapping the ManyToOne Relationship
+	https://symfony.com/doc/7.1/doctrine/associations.html
 	
 	cada category puede estar asociada a many tickets. Pero cada ticket solo puede estar asociado a una sola category. 
 	En resumen:many tickets to one category (or equivalently, one category to many tickets).
@@ -104,4 +109,169 @@ dans les actions du contrôleur. De plus, les formulaires définis dans les clas
 
 Processing le formulaire
 
-Error cuando uno envia la nueva categoria no redirige a la lista de categorias
+CRUD category ok
+
+************
+
+Entity Ticket
+
+Cuando se actualiza una entidad
+comandos:
+php bin/console doctrine:migrations:diff
+
+php bin/console cache:clear
+
+Creation crud para Ticket
+new ticketedit Ticket controller
+-creation de formulario
+	php bin/console make:form
+
+COn esto se crea el archivo TicketTyoe, ligado a la entidad Ticket
+
+-Para que el formulario de ticket afiche la parte de categoria que viene de de la entidad categoria se tiene que ir a a la entidad Categoria y agregar la funcion _toString
+
+
+siguiendo con la categoria en TicketType documentation
+https://symfony.com/doc/6.4/reference/forms/types/entity.html#ref-form-entity-query-builder
+
+appel a l'entity Category (EntityType) pour recuperer les donnes avec une query 
+
+
+
+
+    public function add_category(Request $request, EntityManagerInterface $em) : Response
+    {
+
+        $form=$this->createForm(CategoryType::class);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()){
+
+            $category=new Category;
+            $em->persist($category);
+            $em->flush();
+            dump($request);
+
+        }
+        $formView=$form->createView();
+
+        return $this->render('admin/category/add_category.html.twig', [
+            'formView'=>$formView,
+
+        ]);
+    }
+	
+	
+	
+	
+ // $ticket = $form->getData();
+
+
+TODO!!!!!!!!!!!!!!
+Function edit NO FUNCIONA 
+    #[Route('/ticket/edition/{id}', name: 'app_ticket_edit', methods: ['GET', 'POST'])]
+    public function edit(
+        TicketRepository $ticketRepository, 
+        int $id, 
+        Request $request, 
+        EntityManagerInterface $manager): Response
+    {
+        $ticket = $ticketRepository->findOneBy(["id" => $id]);
+
+        $form = $this->createForm(TicketType::class, $ticket);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+
+           
+
+            $manager->persist($ticket);
+            $manager->flush();
+            $this->addFlash(
+                'success',
+                'Votre ticket a été modifié avec succès !'
+            );
+
+            return $this->redirectToRoute('app_ticket');
+        }
+
+        return $this->render('ticket/edit.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
+	
+	En la funcion delete  agregar un modal que diga está seguro que desea eliminar el ticket
+	
+	*******
+	La securité en symfony ce gere avec le Bundle Security (moi je deja installe ca avec la app). Les autorisations dans Symfony sont toujours liées à un objet utilisateur. 
+	Si vous devez sécuriser (des parties de) votre application, vous devez créer une classe d'utilisateurs. 
+	Il s'agit d'une classe qui implémente UserInterface . Il s'agit souvent d'une entité Doctrine, mais vous pouvez également utiliser une classe d'utilisateurs dédiée à la sécurité.
+		ToDo:
+		-Securité et compte utilisateur
+		php bin/console make:user
+		
+		En la entidad User:
+		On a cree en User une var $plainPassword.
+		apres:     
+		public function __construct()
+			{
+        $this->createdAt = new \DateTimeImmutable();
+			}
+		La classe \DateTimeImmutable() fait partie de l'extension DateTime de PHP et est utilisée pour créer des objets de date et d'heure immuables (non modifiables).
+		
+		----
+		
+		
+		-Entity User 
+		
+		*** Quizas hacer fixtures por aprender y rellenar la base de datos ???? Fixture User Video 10 min 13:05 https://www.youtube.com/watch?v=dODeLDHSnlQ&list=PLUiuGjup8Vg5IGd199d_wvs-Dn8uepCcA&index=10
+		***
+		
+		-Mise en place de fixtures pour tester la aplication composer require --dev orm-fixtures
+		Despues instale faker php libreria que genera falsos datos https://fakerphp.github.io/
+		comandos:php bin/console d:fixtures:load
+		
+		Para mejorar el hasheado del password voy a usar Entity Listeners
+		Entity listeners that are services must be registered with the entity listener resolver. On top of the annotation in the entity class, 
+		you have to tag the service with doctrine.orm.entity_listener for it to be automatically added to the resolver. 
+		Use the (optional) entity_manager attribute to specify which entity manager it should be registered with.
+		
+		Primer codigo para crear usuarios en AppFixtures:
+		
+		        //Users 
+        for ($i = 0; $i <10 ; $i++){
+            $user = new User();
+            $user->setName($this->faker->firstName())
+                 ->setLastname($this->faker->lastName())
+                ->setEmail($this->faker->email())
+                ->setRoles(['ROLE_USER']);
+            //hashed le password
+            $hashPasword = $this->passwordHasher->hashPassword(
+                $user,
+                'password'
+            );
+
+            $user->setPassword($hashPasword);
+
+            $manager->persist($user);
+        }
+		
+		Para crear un nuevo servicio en config->services.yaml
+		    App\EntityListener\:
+			resource: '../src/EntityListener/'
+			tags:['doctrine.orm.entity_listener']
+			
+		Y en la entidad user tambien tuve que hacer cambios
+		***OJO***
+		en services.yaml, hay que tener cuidado con la indentacion, si no estan al mismo nivel da error
+		
+		https://symfony.com/bundles/DoctrineBundle/current/entity-listeners.html
+		
+		
+		
+		-Validation avec les assert
+		-Encodage mot de passe
+		-creation formulaire de connexion
+	creation formulaire inscription???
+	Modification profil utilisateur
+	modification mot de passe
+	

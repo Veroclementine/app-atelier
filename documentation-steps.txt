@@ -1,0 +1,107 @@
+1- User 
+    - id
+    - name
+    - lastname
+    - email
+    - password
+
+2- Ticket
+    - name 
+    - description
+    - categories
+
+    
+3- Category
+    - name 
+    - XXXXdescriptionNO
+    - tickets
+	
+	
+	Equipamientos?
+	
+	
+	
+	Symfony relations - Mapping the ManyToOne Relationship
+	
+	cada category puede estar asociada a many tickets. Pero cada ticket solo puede estar asociado a una sola category. 
+	En resumen:many tickets to one category (or equivalently, one category to many tickets).
+	
+	
+	En la aplicacion el cliente contacta por telefono con soporte y soporte crea el ticket y lo asigna a un tecnico. 
+	Hay un rol de administrador y un rol de tecnico con el crud el admin podra asignar un ticket a un tecnico
+	
+
+	Etapas para crear entity
+	comandos:
+	
+	php bin/console make:entity
+	
+	make a migration:
+	
+	php bin/console make:migration
+	php bin/console doctrine:migrations:migrate
+
+	Validation de données
+	https://symfony.com/doc/current/validation.html
+
+	Constraints
+	En mi entidad categoria pondre una constraints de que el campo no puede estar vacio
+	#[Assert\NotBlank]
+	
+	
+	CRUD Category
+	php bin/console make:controller CategoryController
+	
+	apres le crud j'ai installer le paginator
+	categoryController on a fait une injection de dependences avec Ingredient repository( sert a recuperer les donnes de la bd)
+	CategoryController (instale una extension en vscode PHP DOCBloquer
+	
+	<?php
+
+namespace App\Controller;
+
+use App\Repository\CategoryRepository;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+
+class CategoryController extends AbstractController
+{
+    /**
+     * Undocumented function
+     *
+     * @param CategoryRepository $categoryRepository
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/category', name: 'app_category', methods:['GET'])]
+    public function index(CategoryRepository $categoryRepository, PaginatorInterface $paginator, Request $request): Response
+    {
+
+        $categories = $paginator->paginate(
+            $categoryRepository->findAll(),
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        //dd($categories); pour voir les donnees
+        return $this->render('category/index.html.twig', [
+            'categories' => $categories
+        ]);
+    }
+}
+
+apres une condition pour dire sil n'a pas de categories
+
+**********
+Creation formulaire pour notre crud Category
+Symfony recommande de mettre le moins de logique possible dans les contrôleurs.
+C'est pourquoi il est préférable de déplacer les formulaires complexes vers des classes dédiées plutôt que de les définir 
+dans les actions du contrôleur. De plus, les formulaires définis dans les classes peuvent être réutilisés dans plusieurs actions et services.
+
+Processing le formulaire
+
+Error cuando uno envia la nueva categoria no redirige a la lista de categorias

@@ -50,7 +50,6 @@ class CategoryController extends AbstractController
      * @param EntityManagerInterface $manager
      * @return Response
      */
-
     #[Route('/category/newCategory', name: 'app_category_new', methods: ['GET', 'POST'])]
     public function new(
         Request $request, 
@@ -74,7 +73,7 @@ class CategoryController extends AbstractController
                 'Votre categorie a été créé avec succès !'
             );
 
-            return $this->redirectToRoute('app_category'); //ver error de redireccion a lista
+            return $this->redirectToRoute('app_category');
         }
         return $this->render(
             'category/newCategory.html.twig',
@@ -84,7 +83,13 @@ class CategoryController extends AbstractController
         );
     }
     
-
+    /**
+     * Controller for editing a category
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/category/edition/{id}', name: 'app_category_edit', methods: ['GET', 'POST'])]
     public function edit(
         CategoryRepository $categoryRepository, 
@@ -115,6 +120,13 @@ class CategoryController extends AbstractController
     }
 
 
+   /**
+     * Controller for deleting a category
+     *
+     * @param Request $request
+     * @param EntityManagerInterface $manager
+     * @return Response
+     */
     #[Route('/category/delete/{id}', name: 'app_category_delete', methods: ['GET'])]
     public function delete(
     EntityManagerInterface $manager,

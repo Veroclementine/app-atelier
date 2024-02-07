@@ -21,6 +21,21 @@
     - tickets
 	
 	
+4. Cliente EL cliente puede crear tickets, el tech tambien puede crear??? Entidad creada pero sin relaciones todavia 07/02/2024  
+	-username
+	-email
+	-password
+	-createdAt
+	
+5. Entidad comentaire? ligada a tickets
+	
+	
+Define the relationships between entities:
+Customer and Ticket: Add a ManyToOne relationship from the Ticket entity to the Customer entity. This means many tickets belong to one customer.
+User and Ticket: Add a ManyToOne relationship from the Ticket entity to the User entity. This means many tickets can be assigned to one user.
+Ticket and Category: Add a ManyToOne relationship from the Ticket entity to the Category entity. This means many tickets can have one category.
+	
+	
 	Equipamientos?
 	
 	
@@ -113,7 +128,7 @@ CRUD category ok
 
 ************
 
-Entity Ticket
+Entity Ticket OK
 
 Cuando se actualiza una entidad
 comandos:
@@ -139,36 +154,8 @@ appel a l'entity Category (EntityType) pour recuperer les donnes avec une query
 
 
 
-    public function add_category(Request $request, EntityManagerInterface $em) : Response
-    {
-
-        $form=$this->createForm(CategoryType::class);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted()){
-
-            $category=new Category;
-            $em->persist($category);
-            $em->flush();
-            dump($request);
-
-        }
-        $formView=$form->createView();
-
-        return $this->render('admin/category/add_category.html.twig', [
-            'formView'=>$formView,
-
-        ]);
-    }
-	
-	
-	
-	
- // $ticket = $form->getData();
-
-
 TODO!!!!!!!!!!!!!!
-Function edit NO FUNCIONA 
+Function edit en ticket NO FUNCIONA 
     #[Route('/ticket/edition/{id}', name: 'app_ticket_edit', methods: ['GET', 'POST'])]
     public function edit(
         TicketRepository $ticketRepository, 
@@ -198,8 +185,10 @@ Function edit NO FUNCIONA
             'form' => $form->createView()
         ]);
     }
-	
+	TODO:
 	En la funcion delete  agregar un modal que diga está seguro que desea eliminar el ticket
+	
+	TODO: Crear un campo en ticket que diga Ticket resuelto (boolean) Si o no
 	
 	*******
 	La securité en symfony ce gere avec le Bundle Security (moi je deja installe ca avec la app). Les autorisations dans Symfony sont toujours liées à un objet utilisateur. 
@@ -221,7 +210,12 @@ Function edit NO FUNCIONA
 		----
 		
 		
-		-Entity User 
+		Entity Client OK, pero sin relaciones todavia
+		
+		
+		
+		
+		-Entity User OK
 		
 		*** Quizas hacer fixtures por aprender y rellenar la base de datos ???? Fixture User Video 10 min 13:05 https://www.youtube.com/watch?v=dODeLDHSnlQ&list=PLUiuGjup8Vg5IGd199d_wvs-Dn8uepCcA&index=10
 		***
@@ -255,6 +249,8 @@ Function edit NO FUNCIONA
             $manager->persist($user);
         }
 		
+		**********
+		Exporter la logique de hasher les password pour eviter de charger le petition et on le fait avec EntityListener. En Service.yaml j'ai ajoute un nouveau service
 		Para crear un nuevo servicio en config->services.yaml
 		    App\EntityListener\:
 			resource: '../src/EntityListener/'
@@ -267,11 +263,28 @@ Function edit NO FUNCIONA
 		https://symfony.com/bundles/DoctrineBundle/current/entity-listeners.html
 		
 		
+		-Validation avec les assert Ok
+		-Encodage mot de passe OK
 		
-		-Validation avec les assert
-		-Encodage mot de passe
 		-creation formulaire de connexion
+		La section "firewalls" de config/packages/security.yaml est la plus importante. Un "pare-feu" est votre système d'authentification : le pare-feu définit 
+		quelles parties de votre application sont sécurisées et comment vos utilisateurs pourront s'authentifier (par exemple, formulaire de connexion, jeton API, etc). 
+		
+		-Authentification user -> form login
+		
+		-Creation de un controller para gestionar el login y registro : php bin/console make:controller SecurityController
+		
+		Al crear este controller, se creo en template automaticamente una carpeta que se llama security, el ella el index.html.twig, lo cambiaré por login.html.twig
+		
+		en securityController la function login en name: app_security (original) yo la cambie a app_login
+		
+		TODO: insertar logout en el header o navbar
+	
+		
+		
 	creation formulaire inscription???
-	Modification profil utilisateur
+	
+	
+	Modification profil utilisateur - para modificar vamos a crear un formulario que permita modificar al user. php bin/console make:form userType
 	modification mot de passe
 	

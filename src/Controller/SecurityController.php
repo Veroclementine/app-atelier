@@ -31,10 +31,10 @@ class SecurityController extends AbstractController
      *
      * @return void
      */
-    #[Route('/deconnexion', 'security_logout')]
+    #[Route('/deconnexion', name: 'security_logout')]
     public function logout()
     {
-        // Nothing to do here..
+        return $this->redirectToRoute('home_index');
     }
 
 }

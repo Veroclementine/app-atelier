@@ -41,7 +41,11 @@ Ticket and Category: Add a ManyToOne relationship from the Ticket entity to the 
 Pregunta quién puede crear tickets? el user tech y admin y el cliente?
 
 Posible solution: Cada user tech puede crear un ticket y solo puede ver sus tickets y gestionarlos
+Relation desde la entidad User: OneToMany, Each User can relate to (can have) many Ticket objects.
+               Each Ticket relates to (has) one User.
 El admin puede ver todos los tickets y qué technico lo gestiona.
+
+
 
 - el cliente puede ver el ticket creado por el tecnico??????
 aun no tengo respuesta
@@ -168,36 +172,46 @@ appel a l'entity Category (EntityType) pour recuperer les donnes avec une query
 
 
 TODO!!!!!!!!!!!!!!
-Function edit en ticket NO FUNCIONA 
-    #[Route('/ticket/edition/{id}', name: 'app_ticket_edit', methods: ['GET', 'POST'])]
-    public function edit(
-        TicketRepository $ticketRepository, 
-        int $id, 
-        Request $request, 
-        EntityManagerInterface $manager): Response
-    {
-        $ticket = $ticketRepository->findOneBy(["id" => $id]);
+Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el formulario de ticket quite este codigo y solo deje : 	{{ form(form)}}
 
-        $form = $this->createForm(TicketType::class, $ticket);
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
+		{# {{ form_start(form) }}
 
-           
+		<div class="form-group">
+			{{ form_label(form.name) }}
+			{{ form_widget(form.name) }}
+			<div class="form-error">
+				{{ form_errors(form.name) }}
+			</div>
+		</div>
 
-            $manager->persist($ticket);
-            $manager->flush();
-            $this->addFlash(
-                'success',
-                'Votre ticket a été modifié avec succès !'
-            );
+		<div class="form-group">
+			{{ form_label(form.description) }}
+			{{ form_widget(form.description) }}
+			<div class="form-error">
+				{{ form_errors(form.description) }}
+			</div>
+		</div>
 
-            return $this->redirectToRoute('app_ticket');
-        }
+		<div class="form-group">
+			{{ form_label(form.priority) }}
+			{{ form_widget(form.priority) }}
+			<div class="form-error">
+				{{ form_errors(form.priority) }}
+			</div>
+		</div>
 
-        return $this->render('ticket/edit.html.twig', [
-            'form' => $form->createView()
-        ]);
-    }
+		<div class="form-group">
+			{{ form_label(form.category) }}
+			{{ form_widget(form.category) }}
+			<div class="form-error">
+				{{ form_errors(form.category) }}
+			</div>
+		</div>
+
+		<div class="form-group">
+			{{ form_row(form.submit) }}
+		</div> #}
+
 	TODO:
 	En la funcion delete  agregar un modal que diga está seguro que desea eliminar el ticket
 	
@@ -301,7 +315,7 @@ Function edit en ticket NO FUNCIONA
 	
 	Modification profil utilisateur - para modificar vamos a crear un formulario que permita modificar al user. php bin/console make:form userType
 	
-	Despues del UserType, cree un UserController para poder modificar un usaurio
+	Despues del UserType, cree un UserController para poder modificar un usaurio OK
 	TODO:
 	Hay que segurizar la ruta: http://127.0.0.1:8000/user/edition/22
 	
@@ -313,4 +327,14 @@ Function edit en ticket NO FUNCIONA
 	Ensuite je la recrée :  symfony console d:d:c
 	Puis je lance les fixtures: symfony console d:f:l  
 	----------------------------------------------------------------------------------------------------------------------------------------
+	taches realisés:
+	Mise en place de la relation entre l'entite User et l'entité Ticket OK
+	MOdification fixtures pour lies les tickets avec user OK
+	aficher dans la session de un user ces tickets OK
+	Lier un ticket au user connecte lors de sa création OK
 	
+	
+	Mise a jour de menu x les users OK
+	Mise a jour menu x les anonymes OK
+	
+	Restreindre l'accès aux routes ......

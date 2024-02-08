@@ -9,3 +9,7 @@ kernel:
 app_logout:
     path: /logout
     methods: GET
+
+app_ticket_edit:
+    path: /ticket/edit/{id}
+    controller: App\Controller\TicketController::edit

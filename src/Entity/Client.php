@@ -25,6 +25,13 @@ class Client
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
+    //function pour gerer la data de creation et update automaticament
+    public function __construct()
+    {
+        $this->createdAt = new \DateTimeImmutable;
+
+    }
+
     public function getId(): ?int
     {
         return $this->id;

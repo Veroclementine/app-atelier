@@ -3,31 +3,16 @@
 {% endblock %}
 {% block body %}
 	<div class="container">
-
-			{# Button pour revenir a la liste une category #}
-			{# <a href="{{path('app_ticket')}}" class="btn btn-primary mt-4">
-			Retour</a> #}
-
 		<h1 class="mt-4">Modification utilisateur</h1>
 
-        {{ form(form)}}
-{# 
-		{{ form_start(form) }} #}
-
-		{# <div class="form-group">
-			{{ form_label(form.name) }}
-			{{ form_widget(form.name) }}
-			<div class="form-error">
-				{{ form_errors(form.name) }}
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning mt-4">
+				{{ message }}
 			</div>
-		</div> #}
+		{% endfor %}
 
-		{# <div class="form-group">
-							{{ form_row(form._token) }}
-						</div> #}
-		{# <div class="form-group">
-			{{ form_row(form.submit) }}
+
+		{{ form(form)}}
+
 		</div>
-	</div>
-	{{ form_end(form) }} #}
-</div>{% endblock %}
+	{% endblock %}

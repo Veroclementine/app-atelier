@@ -52,7 +52,7 @@
 							<td>{{ticket.createAt|date('d/m/Y') }}</td>
 
 							<td>
-								<a href="{{ path ('app_ticket_edit', {id:ticket.id}) }}" class="btn btn-info">Modifier</a>
+								<a href="{{ path ('app_ticket_edition', {'id': ticket.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
 							<td>
 								<a href="{{ path ('app_ticket_delete', {id:ticket.id}) }}" class="btn btn-warning">Supprimer</a>

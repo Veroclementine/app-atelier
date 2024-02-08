@@ -33,7 +33,7 @@ class TicketController extends AbstractController
     ): Response
     {
             $tickets = $paginator->paginate(
-            $ticketRepository->findAll(),
+            $ticketRepository->findBy(['user' => $this -> getUser()] ),//method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -64,6 +64,7 @@ class TicketController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             //dd($form->getData());
             $ticket = $form->getData();
+            $ticket->setUser($this->getUser());
 
             $manager->persist($ticket); //commit
             $manager->flush(); //push
@@ -88,7 +89,9 @@ class TicketController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-    #[Route('/ticket/edit/{id}', name: 'app_ticket_edit', methods: ['GET', 'POST'])]
+
+
+    #[Route('/ticket/edition/{id}', name: 'app_ticket_edition', methods: ['GET', 'POST'])]
     public function edit(
         TicketRepository $ticketRepository,
         int $id,
@@ -97,6 +100,11 @@ class TicketController extends AbstractController
     ): Response {
 
         $ticket = $ticketRepository->findOneBy(["id" => $id]);
+        dump($id);
+         // Si no se encuentra el ticket, devolver una respuesta de error o redireccionar a una página de error
+         if (!$ticket) {
+            throw $this->createNotFoundException('Ticket no encontrado');
+        }
 
         // Crear el formulario para editar el ticket
         $form = $this->createForm(TicketType::class, $ticket);

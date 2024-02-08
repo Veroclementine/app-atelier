@@ -1,3 +1,5 @@
+para saber qué version de symfony uso: php bin/console --version
+
 1- User     - Admin et Technicien
     - id
     - name
@@ -34,6 +36,17 @@ Define the relationships between entities:
 Customer and Ticket: Add a ManyToOne relationship from the Ticket entity to the Customer entity. This means many tickets belong to one customer.
 User and Ticket: Add a ManyToOne relationship from the Ticket entity to the User entity. This means many tickets can be assigned to one user.
 Ticket and Category: Add a ManyToOne relationship from the Ticket entity to the Category entity. This means many tickets can have one category.
+
+------------------------------------------------------------------------
+Pregunta quién puede crear tickets? el user tech y admin y el cliente?
+
+Posible solution: Cada user tech puede crear un ticket y solo puede ver sus tickets y gestionarlos
+El admin puede ver todos los tickets y qué technico lo gestiona.
+
+- el cliente puede ver el ticket creado por el tecnico??????
+aun no tengo respuesta
+
+
 	
 	
 	Equipamientos?
@@ -266,7 +279,8 @@ Function edit en ticket NO FUNCIONA
 		-Validation avec les assert Ok
 		-Encodage mot de passe OK
 		
-		-creation formulaire de connexion
+		-creation formulaire de connexion OK http://127.0.0.1:8000/connexion
+		
 		La section "firewalls" de config/packages/security.yaml est la plus importante. Un "pare-feu" est votre système d'authentification : le pare-feu définit 
 		quelles parties de votre application sont sécurisées et comment vos utilisateurs pourront s'authentifier (par exemple, formulaire de connexion, jeton API, etc). 
 		
@@ -286,5 +300,17 @@ Function edit en ticket NO FUNCIONA
 	
 	
 	Modification profil utilisateur - para modificar vamos a crear un formulario que permita modificar al user. php bin/console make:form userType
-	modification mot de passe
+	
+	Despues del UserType, cree un UserController para poder modificar un usaurio
+	TODO:
+	Hay que segurizar la ruta: http://127.0.0.1:8000/user/edition/22
+	
+	
+	modification mot de passe??
+	_______________________________________________________________________________________________________________________________________
+	Posible solution pour probleme de migrationParfois ça peut créer des soucis quand il y a déjà de la donnée dans la base de données.
+	J'ai d'abord drop la base de données : symfony console d:d:d --force    
+	Ensuite je la recrée :  symfony console d:d:c
+	Puis je lance les fixtures: symfony console d:f:l  
+	----------------------------------------------------------------------------------------------------------------------------------------
 	

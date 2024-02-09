@@ -12,12 +12,13 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
 
 class TicketController extends AbstractController
 {
-        /**
+    /**
      * this function or controller display all tickets
      *
      * @param TicketRepository $ticketRepository,
@@ -27,13 +28,12 @@ class TicketController extends AbstractController
      */
     #[Route('/ticket', name: 'app_ticket', methods: ['GET'])]
     public function index(
-    TicketRepository $ticketRepository, 
-    PaginatorInterface $paginator,
-    Request $request
-    ): Response
-    {
-            $tickets = $paginator->paginate(
-            $ticketRepository->findBy(['user' => $this -> getUser()] ),//method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
+        TicketRepository $ticketRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        $tickets = $paginator->paginate(
+            $ticketRepository->findBy(['user' => $this->getUser()]), //method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
@@ -52,11 +52,9 @@ class TicketController extends AbstractController
      */
     #[Route('/ticket/newTicket', name: 'app_ticket_new', methods: ['GET', 'POST'])]
     public function new(
-        Request $request, 
+        Request $request,
         EntityManagerInterface $manager
-    ):
-    Response
-    {
+    ): Response {
         $ticket = new Ticket();
         $form = $this->createForm(TicketType::class, $ticket);
 
@@ -74,11 +72,11 @@ class TicketController extends AbstractController
                 'Votre ticket a été créé avec succès !'
             );
 
-            return $this->redirectToRoute('app_ticket'); 
+            return $this->redirectToRoute('app_ticket');
         }
 
         return $this->render('ticket/newTicket.html.twig', [
-        'form' => $form->createView()
+            'form' => $form->createView()
         ]);
     }
 
@@ -100,30 +98,35 @@ class TicketController extends AbstractController
     ): Response {
 
         $ticket = $ticketRepository->findOneBy(["id" => $id]);
-        dump($id);
-         // Si no se encuentra el ticket, devolver una respuesta de error o redireccionar a una página de error
-         if (!$ticket) {
-            throw $this->createNotFoundException('Ticket no encontrado');
+
+        // Si no se encuentra el ticket, devolver una respuesta de error o redireccionar a una página de error
+        if (!$ticket) {
+            throw $this->createNotFoundException('Ticket non trouvé');
+        }
+
+        // Check if the logged-in user is the owner of the ticket
+        if ($ticket->getUser() !== $this->getUser()) {
+            throw new AccessDeniedException('Pas autorisé à modifier ce ticket');
         }
 
         // Crear el formulario para editar el ticket
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
-    
+
         // Procesar la solicitud del formulario
         if ($form->isSubmitted() && $form->isValid()) {
             $ticket = $form->getData();
 
             $entityManager->persist($ticket);
             $entityManager->flush();
-    
+
             // Añadir un mensaje flash para indicar que el ticket ha sido modificado correctamente
             $this->addFlash('success', 'ticket modifié');
-    
+
             // Redirigir al usuario de vuelta a la lista de tickets después de la edición
             return $this->redirectToRoute('app_ticket');
         }
-    
+
         // Renderizar el formulario de edición
         return $this->render('ticket/edit.html.twig', [
             'form' => $form->createView()
@@ -131,7 +134,7 @@ class TicketController extends AbstractController
     }
 
 
-   /**
+    /**
      * Controller for deleting a ticket
      *
      * @param Request $request
@@ -140,22 +143,18 @@ class TicketController extends AbstractController
      */
     #[Route('/ticket/delete/{id}', name: 'app_ticket_delete', methods: ['GET'])]
     public function delete(
-    EntityManagerInterface $manager,
-    TicketRepository $ticketRepository, 
-    int $id, 
-        ): Response
-    {
-            $ticket = $ticketRepository->findOneBy(["id" => $id]);
-            $manager->remove($ticket);
-            $manager->flush();
-            $this->addFlash(
-                'success',
-                'Votre ticket a été supprimée !'
-            );
+        EntityManagerInterface $manager,
+        TicketRepository $ticketRepository,
+        int $id,
+    ): Response {
+        $ticket = $ticketRepository->findOneBy(["id" => $id]);
+        $manager->remove($ticket);
+        $manager->flush();
+        $this->addFlash(
+            'success',
+            'Votre ticket a été supprimée !'
+        );
 
-            return $this->redirectToRoute('app_ticket');
-        }
-
-    
-
+        return $this->redirectToRoute('app_ticket');
+    }
 }

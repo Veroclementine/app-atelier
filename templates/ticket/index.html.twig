@@ -11,19 +11,22 @@
 		{% if not tickets.items is same as([]) %}
 			<h1>Tickets</h1>
 
+			{% if newTicketButton %}
+				<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
+			{% endif %}
+
 			{# Button pour creer un ticket #}
-			<a href="{{path('app_ticket_new')}}" class="btn btn-primary">
-							Créer un Ticket</a>
+			{# <a href="{{path('app_ticket_new')}}" class="btn btn-primary">
+										Créer un Ticket</a> #}
 
 			{# Flash message votre ticket a ete cree avec succes #}
-			{% for message in app.flashes('success') %}
-							<div class="alert alert-succes">
-								{{ message }}
-							</div>
-						{% endfor %}
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-succes"> {{ message }}
+				</div>
+			{% endfor %}
 
 
-				<table class="table table-hover mt-4"> 
+			<table class="table table-hover mt-4">
 				<thead>
 					<tr>
 						<th scope="col">ID</th>
@@ -42,12 +45,12 @@
 							<th scope="row">{{ticket.id}}</th>
 							<td>{{ticket.name}}</td>
 							<td>
-							{# Condition message si la priorite is null #}
-							{% if ticket.priority is null %}
-							Non renseigné
-							{% else %}
-							{{ticket.priority}}
-							{% endif %}
+								{# Condition message si la priorite is null #}
+								{% if ticket.priority is null %}
+									Non renseigné
+								{% else %}
+									{{ticket.priority}}
+								{% endif %}
 							</td>
 							<td>{{ticket.createAt|date('d/m/Y') }}</td>
 
@@ -70,6 +73,7 @@
 			</div>
 		{% else %}
 			<h4>Il n'y a pas de tickets</h4>
+			<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
 
 		{% endif %}
 

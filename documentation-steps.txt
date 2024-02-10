@@ -45,7 +45,9 @@ Relation desde la entidad User: OneToMany, Each User can relate to (can have) ma
                Each Ticket relates to (has) one User.
 El admin puede ver todos los tickets y qué technico lo gestiona.
 
+Los tickets los crea y gestiona el usuario y el admin
 
+Las categorias solo las gestiona el ADMIN
 
 - el cliente puede ver el ticket creado por el tecnico??????
 aun no tengo respuesta
@@ -316,10 +318,10 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	Modification profil utilisateur - para modificar vamos a crear un formulario que permita modificar al user. php bin/console make:form userType
 	
 	Despues del UserType, cree un UserController para poder modificar un usaurio OK
-	TODO:
+	
 	Hay que segurizar la ruta: http://127.0.0.1:8000/user/edition/22
 	
-	
+	TODO:
 	modification mot de passe??
 	_______________________________________________________________________________________________________________________________________
 	Posible solution pour probleme de migrationParfois ça peut créer des soucis quand il y a déjà de la donnée dans la base de données.
@@ -337,4 +339,20 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	Mise a jour de menu x les users OK
 	Mise a jour menu x les anonymes OK
 	
-	Restreindre l'accès aux routes ......
+	TODO: Problema con ISGRANTED no funciona, en reemplazo utlicé el metodo AccesDeniedException pour restreindre l'acces aux routes de edit ticket et edit utilisateur
+	
+	Ej de condition para restringir la edicion de un ticket que no es el suyo:
+	       // Check if the logged-in user is the owner of the ticket
+        if ($ticket->getUser() !== $this->getUser()) {
+            throw new AccessDeniedException('Pas autorisé à modifier ce ticket');
+        }
+
+	
+	Todo
+	
+	Restringir ruta new ticket y borrar ticket mirar chatgpt
+	Restreindre l'accès aux routes ......x ej: http://127.0.0.1:8000/ticket/newTicket et 
+	http://127.0.0.1:8000/ticket/edition/4
+	et ticket/delete son segurise en security.yaml          
+		  - { path: ^/ticket/newTicket, roles: ROLE_USER }
+          - { path: ^/ticket/delete/[0-9]+$, roles: ROLE_USER }

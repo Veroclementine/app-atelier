@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 
@@ -38,8 +37,16 @@ class TicketController extends AbstractController
             10 /*limit per page*/
         );
 
+        // Verificar si el usuario tiene algún ticket creado
+        if (empty($tickets)) {
+            $newTicketButton = true;
+        } else {
+            $newTicketButton = true;
+        }
+
         return $this->render('ticket/index.html.twig', [
-            'tickets' => $tickets
+            'tickets' => $tickets,
+            'newTicketButton' => $newTicketButton,
         ]);
     }
 
@@ -121,7 +128,7 @@ class TicketController extends AbstractController
             $entityManager->flush();
 
             // Añadir un mensaje flash para indicar que el ticket ha sido modificado correctamente
-            $this->addFlash('success', 'ticket modifié');
+            $this->addFlash('success', 'ticket modifié correctement');
 
             // Redirigir al usuario de vuelta a la lista de tickets después de la edición
             return $this->redirectToRoute('app_ticket');
@@ -148,6 +155,12 @@ class TicketController extends AbstractController
         int $id,
     ): Response {
         $ticket = $ticketRepository->findOneBy(["id" => $id]);
+
+        // Check if the logged-in user is the owner of the ticket
+        if ($ticket->getUser() !== $this->getUser()) {
+            throw new AccessDeniedException('Pas autorisé à supprimer ce ticket');
+        }
+
         $manager->remove($ticket);
         $manager->flush();
         $this->addFlash(

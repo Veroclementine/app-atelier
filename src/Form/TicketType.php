@@ -63,8 +63,7 @@ class TicketType extends AbstractType
                     'class' => 'form-label mt-4'
                 ],
                 'constraints' => [
-                    new Assert\Positive(),
-                    new Assert\LessThan(3)
+                    new Assert\Positive()
                     ]
 
             ])

@@ -14,11 +14,7 @@
 			{% if newTicketButton %}
 				<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
 			{% endif %}
-
-			{# Button pour creer un ticket #}
-			{# <a href="{{path('app_ticket_new')}}" class="btn btn-primary">
-										Créer un Ticket</a> #}
-
+			
 			{# Flash message votre ticket a ete cree avec succes #}
 				{% for message in app.flashes('success') %}
 					<div class="alert alert-succes"> {{ message }}

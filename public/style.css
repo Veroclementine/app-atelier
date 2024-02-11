@@ -1,0 +1,7 @@
+body {
+    flex-direction: column;
+    display: flex;
+    min-height: 100vh;
+    justify-content: space-between;
+  }
+  

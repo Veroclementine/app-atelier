@@ -10,6 +10,7 @@ use App\Entity\Category;
 use App\Entity\Client;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Contact;
 
 
 class AppFixtures extends Fixture
@@ -80,6 +81,19 @@ class AppFixtures extends Fixture
 
             $clients[] = $client;
             $manager->persist($client);
+        }
+
+        //contact
+        for ($i = 0; $i < 5; $i++) {
+            $contact = new Contact();
+            $contact->setName($this->faker->firstName())
+                ->setLastname($this->faker->lastName())
+                ->setEmail($this->faker->email())
+                ->setSubject($this->faker->words(2, true))
+                ->setMessage($this->faker->text(300));
+
+            // $clients[] = $contact;
+            $manager->persist($contact);
         }
 
 

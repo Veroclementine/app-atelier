@@ -34,7 +34,7 @@ class UserType extends AbstractType
             ->add('lastname', TextType::class, [
                 'attr' => [
                     'class' => 'form-control',
-                    'minlenght' => '2',
+                    'minlenght' => '3',
                     'maxlenght' => '50',
                 ],
                 'required' => false,

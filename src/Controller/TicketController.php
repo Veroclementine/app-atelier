@@ -41,7 +41,7 @@ class TicketController extends AbstractController
         if (empty($tickets)) {
             $newTicketButton = true;
         } else {
-            $newTicketButton = true;
+            $newTicketButton = false;
         }
 
         return $this->render('ticket/index.html.twig', [
@@ -104,7 +104,7 @@ class TicketController extends AbstractController
         EntityManagerInterface $entityManager
     ): Response {
 
-        $ticket = $ticketRepository->findOneBy(["id" => $id]);
+        $ticket = $ticketRepository->find($id);
 
         // Si no se encuentra el ticket, devolver una respuesta de error o redireccionar a una página de error
         if (!$ticket) {

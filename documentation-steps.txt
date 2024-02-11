@@ -339,7 +339,7 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	Mise a jour de menu x les users OK
 	Mise a jour menu x les anonymes OK
 	
-	TODO: Problema con ISGRANTED no funciona, en reemplazo utlicé el metodo AccesDeniedException pour restreindre l'acces aux routes de edit ticket et edit utilisateur
+	Problema con ISGRANTED no funciona, en reemplazo utlicé el metodo AccesDeniedException pour restreindre l'acces aux routes de edit ticket et edit utilisateur
 	
 	Ej de condition para restringir la edicion de un ticket que no es el suyo:
 	       // Check if the logged-in user is the owner of the ticket
@@ -348,11 +348,46 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
         }
 
 	
-	Todo
-	
-	Restringir ruta new ticket y borrar ticket mirar chatgpt
+	Restringir ruta new ticket y borrar ticket mirar chatgpt OK
 	Restreindre l'accès aux routes ......x ej: http://127.0.0.1:8000/ticket/newTicket et 
 	http://127.0.0.1:8000/ticket/edition/4
 	et ticket/delete son segurise en security.yaml          
 		  - { path: ^/ticket/newTicket, roles: ROLE_USER }
           - { path: ^/ticket/delete/[0-9]+$, roles: ROLE_USER }
+		  
+		  
+		  http://127.0.0.1:8000/user/edition/4 aussi et securisee OK
+		  http://127.0.0.1:8000/ticket/delete/13 Securisée cuando un usuario intenta suprimir un ticket que no es el suyo, aparece mensaje
+		  
+		SI el utilisateur no tiene ticket, debería mostrarle el boton crear un nuevo ticket OK 
+		  
+
+TODO: 
+	METTRE DOCKER DANS MON PROJECT CHERCHER???
+	Api PLATFORM?
+	Agregar isDone como boolen a Ticket y agregarlo en la view A FAIRE!!!!!!!!!!!
+		
+	
+	
+	----------------------------------
+	Categoria: verificar las rutas para que solo sean accesibles con el USER_ADMIN a faire.....
+	------------------------------------
+	
+	Mettre en place un formulaire de contact, pour le support, apres le tech contacterai au client et creara le ticket
+		- Creation de formulaire
+		- Mettre en place recaptcha
+	Formulaire: Nom, prenom, email, message et sujet createdAt
+TODO:
+
+CLIENT Darles un rol? ROL_CLIENT ???? La entidad cliente no esta asociada a un rol, si intento conectarme desde el login no lo reconoce.
+Por CLIENT, debo crear un CLientController para generar las vistas de Cliente
+
+Voy a crear una entidad Contact, cree fixtures por contact tambien
+
+symfony console doctrine:fixtures:load --append comando para actualizar AppFixtures, sin cambiar los datos que ya existian
+
+
+- CRee un ContactController que va a crear las vistas
+Luego cree un ContactType para gestionar el formulario : php bin/console make:form ContactType
+
+Quede en el capitulo 20 min 14'31 trabajar en ContactController

@@ -26,6 +26,12 @@ class Category
     #[ORM\OneToMany(mappedBy: 'category', targetEntity: Ticket::class)]
     private Collection $tickets;
 
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+
     public function __construct()
     {
         $this->tickets = new ArrayCollection();
@@ -77,9 +83,7 @@ class Category
 
         return $this;
     }
-
-    public function __toString(): string
-    {
-        return $this->name;
-    }
 }
+
+
+

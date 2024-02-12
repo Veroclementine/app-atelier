@@ -32,6 +32,20 @@ class AppFixtures extends Fixture
 
         //Users 
         $users = [];
+        
+        //create admin and put in user table
+        $admin = new User();
+        $admin->setName('Admin')
+              ->setLastname('Atelier Desk')
+              ->setEmail('admin@atelierdesk.com')
+              ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+              ->setPlainPassword('password');
+        
+        $users[] = $admin;
+        $manager->persist($admin);
+
+            
+
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
             $user->setName($this->faker->firstName())
@@ -46,9 +60,9 @@ class AppFixtures extends Fixture
 
         // Categories
         $categories = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 6; $i++) {
             $category = new Category();
-            $category->setName($this->faker->word());
+            $category->setName($this->faker->words(2, true));
 
             $categories[] = $category; // Agregar la categoría al array
             $manager->persist($category);
@@ -56,7 +70,7 @@ class AppFixtures extends Fixture
 
         // Tickets
         $tickets = [];
-        for ($j = 0; $j < 10; $j++) {
+        for ($j = 0; $j < 15; $j++) {
             $ticket = new Ticket();
             $ticket->setName($this->faker->words(3, true))
                 ->setDescription($this->faker->text(300))
@@ -84,12 +98,12 @@ class AppFixtures extends Fixture
         }
 
         //contact
-        for ($i = 0; $i < 5; $i++) {
+        for ($i = 0; $i < 15; $i++) {
             $contact = new Contact();
             $contact->setName($this->faker->firstName())
                 ->setLastname($this->faker->lastName())
                 ->setEmail($this->faker->email())
-                ->setSubject($this->faker->words(2, true))
+                ->setSubject($this->faker->words(3, true))
                 ->setMessage($this->faker->text(300));
 
             // $clients[] = $contact;

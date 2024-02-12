@@ -312,7 +312,7 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	
 		
 		
-	creation formulaire inscription???
+	creation formulaire inscription??? NON
 	
 	
 	Modification profil utilisateur - para modificar vamos a crear un formulario que permita modificar al user. php bin/console make:form userType
@@ -322,7 +322,15 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	Hay que segurizar la ruta: http://127.0.0.1:8000/user/edition/22
 	
 	TODO:
-	modification mot de passe??
+	Creacion formulaire pour modifie le most de passe d'un utilisateur
+	Form-> UserpasswordType.php
+	
+	http://127.0.0.1:8000/user/edition-mot-de-passe/32
+	
+	Modification mot de passe utilisateur ok
+	
+	Falta securizar la ruta : http://127.0.0.1:8000/user/edition-mot-de-passe/id
+
 	_______________________________________________________________________________________________________________________________________
 	Posible solution pour probleme de migrationParfois ça peut créer des soucis quand il y a déjà de la donnée dans la base de données.
 	J'ai d'abord drop la base de données : symfony console d:d:d --force    
@@ -449,8 +457,38 @@ And restart server.
 
 EN Easy Admin les utilisateurs o User, je les appele Technicien. (A faire si je change dans le crud de la app Users x Tecniciens)
 
-EasyAdmin, se puede borrar un ticket.
+*****************REESCRCIBIR EL CAHIER DE CHARGES********************
+EasyAdmin:
+Ticket, se puede borrar, editar y crear sin problemas.
 Utilisateur se puede borrar solo si no tiene tickets
 categories se puede borrar si no está asociada a un ticket
 CLients se pueden borrar y editar
 Contact se pueden borrar y editar
+TODO: crear una funcion para que muestre un mensaje no se puede eliminar !!!!!!!!!!!!
+
+Securiser EasyAdmin video #27 OK
+Limiter l'acces au backoffice, seulement au rol admin
+security.yaml
+- { path: ^/admin, roles: ROLE_ADMIN }
+Solo el admin puede acceder al backoffice easyadmin y a la gestion de categorias
+agregar al dropmenu los accesos a admin y category para el ADMIN cuando esta logeado.
+
+--
+comando pour savoir l'association entre les noms de routes et les chemins
+symfony console debug:router
+
+****mejorar mensajes de acceso denegado modal?
+
+
+
+
+
+
+
+
+
+
+
+
+
+http://127.0.0.1:8000/

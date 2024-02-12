@@ -11,9 +11,7 @@
 		{% if not tickets.items is same as([]) %}
 			<h1>Tickets</h1>
 
-			{% if newTicketButton %}
 				<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
-			{% endif %}
 			
 			{# Flash message votre ticket a ete cree avec succes #}
 				{% for message in app.flashes('success') %}

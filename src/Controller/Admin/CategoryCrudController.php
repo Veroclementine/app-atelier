@@ -25,7 +25,7 @@ class CategoryCrudController extends AbstractCrudController
             
             ->setPageTitle("index", "Atelier Desk - Category")
 
-            ->setPaginatorPageSize(5);
+            ->setPaginatorPageSize(10);
         ;
     }
 
@@ -35,7 +35,8 @@ class CategoryCrudController extends AbstractCrudController
     {
         return [
             IdField::new('id')
-               ->hideOnForm(),
+               ->hideOnForm()
+               ->hideOnIndex(),
             TextField::new('name')
         ];
     }

@@ -13,10 +13,10 @@
 				</li>
 
 				{% if app.user %}
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_ticket') }}">Mes Tickets
-					</a>
-				</li>
+					<li class="nav-item">
+						<a class="nav-link" href="{{ path('app_ticket') }}">Mes Tickets
+						</a>
+					</li>
 				{% endif %}
 
 			</ul>
@@ -30,7 +30,17 @@
 							<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">{{ app.user.name }}</a>
 							<div class="dropdown-menu">
 								<a class="dropdown-item" href="{{ path('user_edit', {id : app.user.id}) }}">Modifier mes informations</a>
-									<div class="dropdown-divider"></div>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{{ path('user_edit_password', {id : app.user.id}) }}">Modifier mot de passe</a>
+								<div class="dropdown-divider"></div>
+								{% if 'ROLE_ADMIN' in app.user.roles %}
+									<a class="dropdown-item" href="{{ path('admin') }}">Administration</a>
+								{% endif %}
+								<div class="dropdown-divider"></div>
+								{% if 'ROLE_ADMIN' in app.user.roles %}
+									<a class="dropdown-item" href="{{ path('app_category') }}">Categories</a>
+								{% endif %}
+								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="{{ path('security_logout') }}">Déconnexion</a>
 							</div>
 						</li>
@@ -41,7 +51,7 @@
 						</li>
 					{% endif %}
 
-		
-		</div>
-	</div>
-</nav>
+
+				</div>
+			</div>
+		</nav>

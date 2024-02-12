@@ -4,7 +4,9 @@ namespace App\Controller\Admin;
 
 use App\Entity\Ticket;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -22,7 +24,7 @@ class TicketCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Gestion Tickets')
-            ->setEntityLabelInSingular('Gestion Ticket')
+            ->setEntityLabelInSingular('Ticket')
             
             ->setPageTitle("index", "Atelier Desk - Tickets")
 
@@ -37,18 +39,26 @@ class TicketCrudController extends AbstractCrudController
             IdField::new('id')
                 ->hideOnForm(),
             TextField::new('name'),
-            TextField::new('category')
-                ->setFormTypeOption('disabled', 'disabled'),
+            // TextField::new('category')
+            //     ->setFormTypeOption('disabled', 'disabled'),
             TextEditorField::new('description'),
             AssociationField::new('user')
                 ->hideOnForm()->formatValue(function ($value, $entity) {
                 return $entity->getUser()->getName();
             }),
+            AssociationField::new('category'),
             DateTimeField::new('createAt')
                 ->hideOnIndex()->setFormTypeOption('disabled', 'disabled'),
             DateTimeField::new('updateAt')->hideOnIndex()
                 ->setFormTypeOption('disabled', 'disabled')
         ];
     }
+
+    //for remove Create new ticket button
+    // public function configureActions(Actions $actions): Actions
+    // {
+    //     return $actions
+    //         ->disable(Action::NEW);
+    // }
     
 }

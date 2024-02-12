@@ -390,4 +390,67 @@ symfony console doctrine:fixtures:load --append comando para actualizar AppFixtu
 - CRee un ContactController que va a crear las vistas
 Luego cree un ContactType para gestionar el formulario : php bin/console make:form ContactType
 
-Quede en el capitulo 20 min 14'31 trabajar en ContactController
+Una vez creado el form en COntactType y haber creado la funcion index desde ContactController, voy a editar el template Contact/index.html.twig
+
+Formulaire contact OK http://127.0.0.1:8000/contact
+
+Servicios: php bin/console debug:autowiring  para ver todos los servicios que ofrece symfony. 
+El interes es crear uno propio y externalizarlo y poder customizarlo como uno necesite. 
+
+Mise en place d'un service Email, car actuellement l'envoi est gere au sein du ContactController et on doit mettre le moins de logique dans le controller.
+--------------------------------------------
+Code ancien au sein du ContactController
+            //Email
+
+            $email = (new TemplatedEmail())
+                ->from($contact->getEmail())
+                ->to('admin@atelierdesk.com')
+                ->subject($contact->getSubject())
+                ->htmlTemplate('emails/contact.html.twig')
+
+            
+                // pass variables (name => value) to the template
+                ->context([
+                    'contact' => $contact
+
+                ]);
+
+            $mailer->send($email);
+			
+--------------------------------------------
+Creation Folder Service et al interieur MailService.php
+
+
+Envoyer un email. Me cree una cuenta en Mailtrap con veroclementine2000@gmail.com, para hacer los tests de envio de email.
+Configuracion Mailtrap  https://mailtrap.io/inboxes/2601841/messages/4028013406
+admin@atelierdesk.com
+Todo
+Google recaptcha?? peut etre installer apres
+
+
+-----
+Mise en place Easy Admin Sisteme d' administration pour gerer categories, users, formulaires, etc.
+
+composer require easycorp/easyadmin-bundle
+
+http://127.0.0.1:8000/admin
+
+********************************************************************************************
+ERROR AND SOLUTION
+PHP Intl extension enabling issue when using date/time fields in EasyAdmin backends #4753
+
+Solution: On windows juste remove semicolon in php.ini
+;extension=gmp
+extension=intl
+;extension=imap
+And restart server.
+
+*********************************************************************************************
+
+EN Easy Admin les utilisateurs o User, je les appele Technicien. (A faire si je change dans le crud de la app Users x Tecniciens)
+
+EasyAdmin, se puede borrar un ticket.
+Utilisateur se puede borrar solo si no tiene tickets
+categories se puede borrar si no está asociada a un ticket
+CLients se pueden borrar y editar
+Contact se pueden borrar y editar

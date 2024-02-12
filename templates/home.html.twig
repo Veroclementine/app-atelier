@@ -6,12 +6,17 @@
 	<div class="container mt-4">
 		<div class="jumbotron">
 			<h1 class="display-4">Bienvenue sur Atelier - Desk</h1>
-			
+
 			<hr class="my-4">
 			<p>Pour commencer, rendez-vous sur la page de connexion pour utiliser l'application.</p>
 			<a class="btn btn-primary btn-lgz" href="{{ path('app_login') }}" role="button">Se connecter</a>
 		</div>
 
+		<!-- Agrega tu formulario de contacto aquí -->
+		<div class="mt-5">
+			<h3>Besoin d'nformation?</h3>
+			<a class="btn btn-secondary btn-lgz" href="{{ path('app_contact') }}" role="button">Contactez-nous</a>
+		</div>
 
 
-{% endblock %}
+	{% endblock %}

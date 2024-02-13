@@ -21,7 +21,7 @@ class SecurityController extends AbstractController
 
                 // Check if the user is already authenticated
                 if ($this->getUser()) {
-                    return $this->redirectToRoute('app_ticket');
+                    return $this->redirectToRoute('home_ticket');
                 }
         
         

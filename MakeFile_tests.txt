@@ -1,0 +1,24 @@
+Symfony: tests
+Commande pour creer un test
+php bin/console make:test
+
+commande pour lancer le test:
+php bin/phpunit
+
+
+Pour drop or validate la BD sur test enviroment
+	php bin/console d:d:d --force --if-exists --env=test
+Recreer la BD	
+	php bin/console d:d:c --env=test
+Migrer la BD
+	php bin/console d:m:m --no-interaction --env=test
+Envoyer les fixtures
+	php bin/console d:f:l --no-interaction --env=test
+
+Génère une sortie facile à lire décrivant chaque test
+	php bin/phpunit --testdox tests/Unit/
+	php bin/phpunit --testdox tests/Functional/
+
+Apres installer php bin/phpunit --testdox tests/Unit/
+php bin/phpunit --testdox tests/Functional/
+

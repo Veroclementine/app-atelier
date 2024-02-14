@@ -2,10 +2,11 @@
 {% block title %}Atelier-Desk New Category
 {% endblock %}
 {% block body %}
-	<div class="container">
+	<div
+		class="container">
 
-			{# Button pour revenir a la liste une category #}
-			<a href="{{path('app_category')}}" class="btn btn-primary mt-4">
+		{# Button pour revenir a la liste une category #}
+		<a href="{{path('app_category')}}" class="btn btn-primary mt-4">
 			Retour a liste de categories</a>
 
 		<h1 class="mt-4">Création d'une Categorie</h1>
@@ -20,9 +21,9 @@
 			</div>
 		</div>
 
-		{# <div class="form-group">
-							{{ form_row(form._token) }}
-						</div> #}
+		<div class="form-group">
+			{{ form_row(form._token) }}
+		</div>
 		<div class="form-group">
 			{{ form_row(form.submit) }}
 		</div>

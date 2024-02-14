@@ -1,7 +1,44 @@
+
+/* styles.css */
+
+/* Estilos para el fondo de la página */
 body {
-    flex-direction: column;
-    display: flex;
-    min-height: 100vh;
-    justify-content: space-between;
-  }
-  
+  /* Asegura que la imagen cubra todo el fondo */
+  background-image: url('../img/desk.jpg');
+  background-size: 100vh;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0.9; /* Opacidad de la imagen, un valor entre 0 y 1 */
+}
+
+/* Estilos adicionales para el contenido */
+.container {
+  /* Centra el contenido verticalmente */
+  display: flex;
+  flex-direction: column;
+  justify-content: left;
+  align-items: left;
+  height: 100vh; /* Ajusta la altura del contenedor al 100% del viewport */
+}
+
+.jumbotron {
+  /* Añade un poco de espacio entre el contenido y la imagen de fondo */
+  margin-bottom: 20px;
+}
+
+h1, h3, p {
+  font-weight: bolder; /* Texto en negrita */
+  color: rgb(21, 21, 22); /* Color de texto rojo */
+}
+
+/* Estilos para el footer */
+footer {
+  position: fixed; /* Fija el footer en la parte inferior */
+  left: 0; /* Alinea el footer a la izquierda */
+  bottom: 0; /* Coloca el footer en la parte inferior */
+  width: 100%; /* Ancho completo del footer */
+  background-color: #333; /* Color de fondo del footer */
+  color: #fff; /* Color de texto blanco */
+  text-align: center; /* Alinea el texto al centro */
+  padding: 10px 0; /* Agrega espacio interno al footer */
+}

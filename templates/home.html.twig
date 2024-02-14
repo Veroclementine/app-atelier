@@ -2,7 +2,12 @@
 
 {% block title %}Atelier - Desk
 {% endblock %}
+
 {% block body %}
+	<head>
+		<title>My Symfony App</title>
+		<link rel="stylesheet" href="{{ asset('style.css') }}">
+	</head>
 	<div class="container mt-4">
 		<div class="jumbotron">
 			<h1 class="display-4">Bienvenue sur Atelier - Desk</h1>
@@ -19,4 +24,5 @@
 		</div>
 
 
-	{% endblock %}
+
+{% endblock %}

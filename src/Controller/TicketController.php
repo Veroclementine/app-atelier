@@ -94,8 +94,6 @@ class TicketController extends AbstractController
      * @param EntityManagerInterface $entityManager
      * @return Response
      */
-
-
     #[Route('/ticket/edition/{id}', name: 'app_ticket_edition', methods: ['GET', 'POST'])]
     public function edit(
         TicketRepository $ticketRepository,

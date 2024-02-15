@@ -11,7 +11,7 @@ use App\Entity\Client;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use App\Entity\Contact;
-
+use App\Entity\TicketSolutions;
 
 class AppFixtures extends Fixture
 {
@@ -32,19 +32,19 @@ class AppFixtures extends Fixture
 
         //Users 
         $users = [];
-        
+
         //create admin and put in user table
         $admin = new User();
         $admin->setName('Admin')
-              ->setLastname('Atelier Desk')
-              ->setEmail('admin@atelierdesk.com')
-              ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
-              ->setPlainPassword('password');
-        
+            ->setLastname('Atelier Desk')
+            ->setEmail('admin@atelierdesk.com')
+            ->setRoles(['ROLE_USER', 'ROLE_ADMIN'])
+            ->setPlainPassword('password');
+
         $users[] = $admin;
         $manager->persist($admin);
 
-            
+
 
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
@@ -83,6 +83,22 @@ class AppFixtures extends Fixture
 
             $tickets[] = $ticket;
             $manager->persist($ticket);
+        }
+
+        //ticket_solutions
+
+        $ticketSolutions = [];
+        for ($i = 0; $i < 8; $i++) { 
+            $ticketSolution = new TicketSolutions();
+            $ticketSolution->setName($this->faker->words(3, true))
+            ->setDescription($this->faker->text(300));
+
+            // Asociar una solución a un ticket existente
+            $randomTicket = $tickets[array_rand($tickets)];
+            $ticketSolution->setName($randomTicket->getName());
+
+            $ticketSolutions[] = $ticketSolution;
+            $manager->persist($ticketSolution);
         }
 
         //Clients

@@ -25,7 +25,11 @@ services:
         resource: '../src/EntityListener/'
         tags: ['doctrine.orm.entity_listener']
 
-
+    App\EventListener\RouteNotFoundListener:
+        arguments:
+            $urlGenerator: '@router'
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
 
 
 

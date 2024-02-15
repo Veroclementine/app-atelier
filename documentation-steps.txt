@@ -1,17 +1,17 @@
 para saber qué version de symfony uso: php bin/console --version
 
 1- User     - Admin et Technicien
-    - id
-    - name
-    - lastname
-    - email
-    - password
+    -id
+    -name
+    -lastname
+    -email
+    -password
 	-createdAt
 
 2- Ticket
-    - name 
-    - description
-    - categories
+    -name 
+    -description
+    -categories
 	-created At
 	-update At
 	-priority (agregue una constraint para que sea entre 1 y 3)
@@ -20,7 +20,7 @@ para saber qué version de symfony uso: php bin/console --version
 3- Category
     - name 
     - XXXXdescriptionNO
-    - tickets
+    - tickets relation
 	
 	
 4. Cliente EL cliente puede crear tickets, el tech tambien puede crear??? Entidad creada pero sin relaciones todavia 07/02/2024  
@@ -29,7 +29,11 @@ para saber qué version de symfony uso: php bin/console --version
 	-password
 	-createdAt
 	
-5. Entidad comentaire? ligada a tickets
+5. Entidad ticket_solutions
+	-name
+	-description
+	-created At
+	-update At
 	
 	
 Define the relationships between entities:
@@ -482,13 +486,102 @@ symfony console debug:router
 
 
 
+----
+The cache Componen
+composer require symfony/cache
+
+Je le met pour que le site soi plus performante et rapide pour l'utilisateur et potencialement pour les clients.
+
+Le cache dans Symfony est essentiellement une technique pour stocker temporairement des informations souvent utilisées dans la mémoire de l'ordinateur, ce qui permet d'accéder plus rapidement à ces informations ultérieurement.
+
+Imaginons que tu as un site web construit avec Symfony. À chaque fois qu'un utilisateur visite une page, Symfony doit exécuter plusieurs étapes pour générer cette page, comme récupérer des données de la base de données, exécuter du code PHP, etc. Ces étapes peuvent être assez lourdes et prendre du temps.
+
+Avec le cache, Symfony va sauvegarder le résultat de ces étapes une fois qu'elles ont été exécutées une première fois. Ensuite, lorsque la même page est demandée à nouveau, Symfony peut simplement récupérer les résultats sauvegardés dans le cache, ce qui est beaucoup plus rapide que de refaire toutes les étapes depuis le début.
+
+C'est un peu comme si tu avais un livre et que tu écrivais un résumé à la fin de chaque chapitre. Lorsque tu veux te rappeler de quelque chose dans le livre, tu peux simplement consulter le résumé plutôt que de relire tout le chapitre. Le cache fonctionne de manière similaire, en stockant les résultats pour éviter de devoir refaire un travail intensif chaque fois que c'est nécessaire.
 
 
 
+***
+Webpack encore, installé ok, mais pas customisé 
+***
 
 
-
+Crear un eventListener que maneje las excepciones de rutas no encontradas lo redirija a la home
+eventListener- > RouteNotFoundListener
 
 
 
 http://127.0.0.1:8000/
+
+
+
+
+------------------------------------------------------------------------------
+COdigo TicketController
+Agregué el component cache pero al final lo he sacado. Porque los datos deben verse reflejados rapidamente
+
+<?php
+
+namespace App\Controller;
+
+use App\Entity\Ticket;
+use App\Form\TicketType;
+use App\Repository\TicketRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Contracts\Cache\ItemInterface;
+
+class TicketController extends AbstractController
+{
+    /**
+     * this function or controller display all tickets
+     *
+     * @param TicketRepository $ticketRepository,
+     * @param PaginatorInterface $paginator
+     * @param Request $request
+     * @return Response
+     */
+    #[Route('/ticket', name: 'app_ticket', methods: ['GET'])]
+    public function index(
+        TicketRepository $ticketRepository,
+        PaginatorInterface $paginator,
+        Request $request
+    ): Response {
+        //Add cache component
+        $cache = new FilesystemAdapter();
+        $data = $cache->get('cache_key', function (ItemInterface $item) use ($ticketRepository) {
+            $item->expiresAfter(200);
+            return $ticketRepository->findBy(['user' => $this->getUser()]);//method for get tickets associés to users authenticated.
+
+        });
+
+        $tickets = $paginator->paginate(
+            $data, 
+            $request->query->getInt('page', 1), /*page number*/
+            10 /*limit per page*/
+        );
+
+        // Verificar si el usuario tiene algún ticket creado
+        if (empty($tickets)) {
+            $newTicketButton = true;
+        } else {
+            $newTicketButton = false;
+        }
+
+        return $this->render('ticket/index.html.twig', [
+            'tickets' => $tickets,
+            'newTicketButton' => $newTicketButton,
+        ]);
+    }
+	
+----------------------------------------------------------------------------------------------------------------
+
+Creation TicketSolutions view
+TODO: mettre dans le _header un link et creer une listener

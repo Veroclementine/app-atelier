@@ -43,6 +43,9 @@ class Ticket
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    private ?TicketSolutions $ticketSolutions = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -136,6 +139,26 @@ class Ticket
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+    
+
+    //function not use by now, but maybe in the future
+    public function getTicketSolutions(): ?TicketSolutions
+    {
+        return $this->ticketSolutions;
+    }
+
+    public function setTicketSolutions(?TicketSolutions $ticketSolutions): static
+    {
+        $this->ticketSolutions = $ticketSolutions;
 
         return $this;
     }

@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Atelier Desk Ticket Solutions
+{% endblock %}
+
+{% block body %}
+
+	<div
+		class="container mt-4">
+		{# condition pour montrer une reponse si'l n'ai pas de tickets #}
+		{% if not ticketsolutions.items is same as([]) %}
+			<h1>Tickets Solutions</h1>
+
+			<a href="{{ path('app_ticketsolutions_new') }}" class="btn btn-primary">Créer une nouvelle solution</a>
+
+			{# Flash message votre ticket a ete cree avec succes #}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-succes">
+					{{ message }}
+				</div>
+			{% endfor %}
+			<div class="count mt-4">
+				Il y a
+				{{ ticketsolutions.getTotalItemCount }}
+				solutions
+			</div>
+
+
+			<table class="table table-hover mt-4">
+				<thead>
+					<tr>
+						<th scope="col">ID</th>
+						<th scope="col">Nom</th>
+						<th scope="col">Description</th>
+						<th scope="col">Date de création</th>
+						<th scope="col">Date de mis a jour</th>
+						<th scope="col">Edition</th>
+						<th scope="col">Suppresion</th>
+
+					</tr>
+				</thead>
+				<tbody>
+
+					{% for ticketsolution in ticketsolutions %}
+						<tr class="table-primary">
+							<th scope="row">{{ticketsolution.id}}</th>
+							<td>{{ticketsolution.name}}</td>
+							<td>{{ticketsolution.description}}</td>
+							<td>{{ticketsolution.createdAt|date('d/m/Y') }}</td>
+							<td>{{ticketsolution.updatedAt|date('d/m/Y') }}</td>
+
+							<td>
+								<a href="{{ path ('app_ticketsolutions_edit', {'id': ticketsolution.id}) }}" class="btn btn-info">Modifier</a>
+							</td>
+							<td>
+								<a href="{{ path ('app_ticketsolutions_delete', {id:ticketsolution.id}) }}" class="btn btn-warning">Supprimer</a>
+
+
+							</td>
+
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+			{# display navigation #}
+			<div class="navigation">
+				{{ knp_pagination_render(ticketsolutions) }}
+			</div>
+
+		{% else %}
+			<h4>Il n'y a pas de solutions</h4>
+
+
+		{% endif %}
+
+	</div>
+
+{% endblock %}

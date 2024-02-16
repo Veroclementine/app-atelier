@@ -5,7 +5,8 @@
 
 {% block body %}
 
-	<div class="container mt-4">
+	<div
+		class="container mt-4">
 		{# condition pour montrer une reponse si'l n'ai pas de categories #}
 		{% if not categories.items is same as([]) %}
 			<h1>Categories</h1>
@@ -28,7 +29,6 @@
 						<th scope="col">ID</th>
 						<th scope="col">Nom</th>
 						<th scope="col">Edition</th>
-						<th scope="col">Suppresion</th>
 
 					</tr>
 				</thead>
@@ -39,11 +39,7 @@
 							<th scope="row">{{category.id}}</th>
 							<td>{{category.name}}</td>
 							<td>
-							<a href="{{ path ('app_category_edit', {id:category.id}) }}" class="btn btn-info">Modifier</a>
-							</td>
-							<td>
-							<a href="{{ path ('app_category_delete', {id:category.id}) }}" class="btn btn-warning">Supprimer</a>
-						
+								<a href="{{ path ('app_category_edit', {id:category.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
 
 						</tr>
@@ -58,8 +54,8 @@
 		{% else %}
 			<h4>Il n'y a pas d'ingrédients</h4>
 			{# <a href="{{ path('ingredient.new') }}" class="btn btn-primary">
-																			Créer un ingrédient
-																		</a> #}
+																						Créer un ingrédient
+																					</a> #}
 		{% endif %}
 
 	</div>

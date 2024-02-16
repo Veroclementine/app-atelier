@@ -26,9 +26,9 @@ class TicketsolutionsController extends AbstractController
     public function index(TicketSolutionsRepository $ticketSolutionsRepository, PaginatorInterface $paginator, Request $request): Response
     {
         $ticketsolutions = $paginator->paginate(
-            $ticketSolutionsRepository->findAll(), //method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
+            $ticketSolutionsRepository->findBy([], ['createdAt' => 'DESC']), // Order by creation date DESC
             $request->query->getInt('page', 1), /*page number*/
-            5 /*limit per page*/
+            6 /*limit per page*/
         );
 
 

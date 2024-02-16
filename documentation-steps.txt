@@ -592,9 +592,21 @@ class TicketController extends AbstractController
     }
 	
 ----------------------------------------------------------------------------------------------------------------
+15/02/2024
 
-Creation TicketSolutions view
+Creation TicketSolutions view ok 15/02/2024
 TODO: mettre dans le _header un link et creer une listener
 Securiser les routes pour ticketsolutions
 No temps pour faire test unitaires avec CRUD de TicketsSolutions
+
+-Modification entidad Client OK
+Add fields: City,address, telephone and delete password
+
+
+
+Creation entity Equipment
+Equipment a une relation avec clients
+Entity Client et Equipment serait gestione depuis EasyAdmin, seulement le admin peux gerer ça.
+
+creation query pour montre le dernier ticket solution
 

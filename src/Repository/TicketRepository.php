@@ -3,8 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Ticket;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\Category;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @extends ServiceEntityRepository<Ticket>
@@ -20,6 +21,17 @@ class TicketRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Ticket::class);
     }
+
+    //function not used for now
+    // public function countTicketsByCategory(Category $category): int
+    // {
+    //     return $this->createQueryBuilder('t')
+    //         ->select('COUNT(t.id)')
+    //         ->andWhere('t.category = :category')
+    //         ->setParameter('category', $category)
+    //         ->getQuery()
+    //         ->getSingleScalarResult();
+    // }
 
 //    /**
 //     * @return Ticket[] Returns an array of Ticket objects

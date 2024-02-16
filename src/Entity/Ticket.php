@@ -33,7 +33,7 @@ class Ticket
     private ?\DateTimeImmutable $updateAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", onDelete: "SET NULL")]
     private ?Category $category = null;
 
     #[ORM\Column(nullable: true)]

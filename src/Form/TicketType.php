@@ -58,7 +58,7 @@ class TicketType extends AbstractType
                     'min' => 1,
                     'max' => 3
                 ],
-                'label' => 'Priorité (1= urgent 2=normal et 3= pas urgent)',
+                'label' => '*Priorité (1= urgent 2=normal et 3= pas urgent)',
                 'label_attr' => [
                     'class' => 'form-label mt-4'
                 ],

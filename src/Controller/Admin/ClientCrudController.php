@@ -37,6 +37,9 @@ class ClientCrudController extends AbstractCrudController
             ->hideOnForm(),
             TextField::new('username'),
             TextField::new('email'),
+            TextField::new('city'),
+            TextField::new('address'),
+            TextField::new('telephone'),  
             DateTimeField::new ('CreatedAt')
             ->setFormTypeOption('disabled', 'disabled')
             ->hideOnIndex()

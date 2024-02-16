@@ -5,13 +5,14 @@ namespace App\DataFixtures;
 use Faker\Factory;
 use App\Entity\User;
 use Faker\Generator;
-use App\Entity\Ticket;
-use App\Entity\Category;
 use App\Entity\Client;
+use App\Entity\Ticket;
+use App\Entity\Contact;
+use App\Entity\Category;
+use App\Entity\Equipment;
+use App\Entity\TicketSolutions;
 use Doctrine\Persistence\ObjectManager;
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use App\Entity\Contact;
-use App\Entity\TicketSolutions;
 
 class AppFixtures extends Fixture
 {
@@ -105,13 +106,32 @@ class AppFixtures extends Fixture
         $clients = [];
         for ($i = 0; $i < 10; $i++) {
             $client = new Client();
-            $client->setUsername($this->faker->username())
-                ->setEmail($this->faker->email())
-                ->setPassword('password');
+            $client->setUsername($this->faker->userName())
+                   ->setEmail($this->faker->email())
+                   ->setTelephone($this->faker->phoneNumber())
+                   ->setCity($this->faker->city())
+                   ->setAddress($this->faker->address());
 
             $clients[] = $client;
             $manager->persist($client);
         }
+
+        // Create Equipment
+        for ($i = 0; $i < 20; $i++) {
+            $equipment = new Equipment();
+            $equipment->setName($this->faker->word())
+                      ->setBrand($this->faker->word())
+                      ->setModel($this->faker->word())
+                      ->setPurchaseDate($this->faker->dateTimeBetween('-2 years', 'now'))
+                      ->setWarrantyExpiry($this->faker->dateTimeBetween('now', '+3 years'))
+                      ->setSerialNumber($this->faker->ean13())
+                      ->setClient($clients[array_rand($clients)]);
+
+            $manager->persist($equipment);
+        }
+
+        $manager->flush();
+
 
         //contact
         for ($i = 0; $i < 15; $i++) {
@@ -122,7 +142,6 @@ class AppFixtures extends Fixture
                 ->setSubject($this->faker->words(3, true))
                 ->setMessage($this->faker->text(300));
 
-            // $clients[] = $contact;
             $manager->persist($contact);
         }
 

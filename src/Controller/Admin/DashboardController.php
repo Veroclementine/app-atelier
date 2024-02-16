@@ -5,7 +5,9 @@ namespace App\Controller\Admin;
 use App\Entity\Category;
 use App\Entity\Client;
 use App\Entity\Contact;
+use App\Entity\Equipment;
 use App\Entity\Ticket;
+use App\Entity\TicketSolutions;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -34,8 +36,10 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Utilisateurs', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Tickets', 'fas fa-ticket', Ticket::class);
+        yield MenuItem::linkToCrud('Solutions Tickets', 'fas fa-book', TicketSolutions::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-pencil-square', Category::class);
         yield MenuItem::linkToCrud('Clients', 'fas fa-user-circle', Client::class);
+        yield MenuItem::linkToCrud('Equipement', 'fas fa-laptop', Equipment::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fas fa-envelope', Contact::class);
 
 

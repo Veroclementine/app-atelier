@@ -54,7 +54,7 @@ class TicketCrudController extends AbstractCrudController
         ];
     }
 
-    //for remove Create new ticket button
+    //for remove Create new ticket button Because only technicies can create tickets
     // public function configureActions(Actions $actions): Actions
     // {
     //     return $actions

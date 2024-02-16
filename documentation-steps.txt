@@ -29,11 +29,21 @@ para saber qué version de symfony uso: php bin/console --version
 	-password
 	-createdAt
 	
-5. Entidad ticket_solutions
+5. Entidad ticket_solutions (base de connaisances)
 	-name
 	-description
 	-created At
 	-update At
+	
+	
+6. Equipment
+	-name
+	-brand
+	-model
+	-purchased_date
+	-warranty_expiration
+	-serial_number
+
 	
 	
 Define the relationships between entities:
@@ -507,7 +517,7 @@ Webpack encore, installé ok, mais pas customisé
 ***
 
 
-Crear un eventListener que maneje las excepciones de rutas no encontradas lo redirija a la home
+J'ai cree un eventListener pour gere les routes que n'existen pas pour redirigir au utilisateur al accueil
 eventListener- > RouteNotFoundListener
 
 
@@ -585,3 +595,6 @@ class TicketController extends AbstractController
 
 Creation TicketSolutions view
 TODO: mettre dans le _header un link et creer une listener
+Securiser les routes pour ticketsolutions
+No temps pour faire test unitaires avec CRUD de TicketsSolutions
+

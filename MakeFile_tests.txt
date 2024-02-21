@@ -1,3 +1,7 @@
+Symfony commands:
+php bin/console --version
+
+
 Symfony: tests
 Commande pour creer un test
 php bin/console make:test

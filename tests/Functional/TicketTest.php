@@ -13,17 +13,17 @@ class TicketTest extends WebTestCase
     public function testIfCreateTicketIsSuccessfull(): void
     {
         $client = static::createClient();
-
+        //get url
         $urlGenerator = $client->getContainer()->get('router');
-
+        //get EntityManager
         $entityManager = $client->getContainer()->get('doctrine.orm.entity_manager');
 
         $user = $entityManager->find(User::class, 1);
 
         $client->loginUser($user);
-
+        //get page for create a new ticket
         $crawler = $client->request(Request::METHOD_GET, $urlGenerator->generate('app_ticket_new'));
-
+        //manage le form
         $form = $crawler->filter('form[name=ticket]')->form([
             'ticket[name]' => "New ticket",
             'ticket[description]' => "ticket description",

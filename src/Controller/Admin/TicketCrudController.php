@@ -39,11 +39,11 @@ class TicketCrudController extends AbstractCrudController
             IdField::new('id')
                 ->hideOnForm(),
             TextField::new('name'),
-            // TextField::new('category')
+             TextField::new('category'),
             //     ->setFormTypeOption('disabled', 'disabled'),
             TextEditorField::new('description'),
             AssociationField::new('user')
-                ->hideOnForm()->formatValue(function ($value, $entity) {
+                ->formatValue(function ($value, $entity) {
                 return $entity->getUser()->getName();
             }),
             AssociationField::new('category'),

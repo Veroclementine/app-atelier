@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 
 
@@ -36,8 +37,7 @@ class TicketController extends AbstractController
             $request->query->getInt('page', 1), /*page number*/
             10 /*limit per page*/
         );
-
-        // Verificar si el usuario tiene algún ticket creado
+        //condition pour savoir s'il y a des tickets ou pas
         if (empty($tickets)) {
             $newTicketButton = true;
         } else {
@@ -99,40 +99,39 @@ class TicketController extends AbstractController
         TicketRepository $ticketRepository,
         int $id,
         Request $request,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
     ): Response {
 
         $ticket = $ticketRepository->find($id);
 
-        // Si no se encuentra el ticket, devolver una respuesta de error o redireccionar a una página de error
+        // If the ticket is not found, return an error response
         if (!$ticket) {
             throw $this->createNotFoundException('Ticket non trouvé');
         }
 
         // Check if the logged-in user is the owner of the ticket
         if ($ticket->getUser() !== $this->getUser()) {
-            throw new AccessDeniedException('Pas autorisé à modifier ce ticket');
+            $this->addFlash('warning', 'Vous n\'êtes pas autorisé à modifier ce ticket.');
+            return $this->redirectToRoute('app_ticket');
         }
 
-        // Crear el formulario para editar el ticket
+        // Create the form to edit the ticket
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
-        // Procesar la solicitud del formulario
         if ($form->isSubmitted() && $form->isValid()) {
             $ticket = $form->getData();
 
             $entityManager->persist($ticket);
             $entityManager->flush();
 
-            // Añadir un mensaje flash para indicar que el ticket ha sido modificado correctamente
+            // Message success
             $this->addFlash('success', 'ticket modifié correctement');
 
-            // Redirigir al usuario de vuelta a la lista de tickets después de la edición
             return $this->redirectToRoute('app_ticket');
         }
 
-        // Renderizar el formulario de edición
+        // Render the edit form
         return $this->render('ticket/edit.html.twig', [
             'form' => $form->createView()
         ]);

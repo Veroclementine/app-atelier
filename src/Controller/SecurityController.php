@@ -19,12 +19,12 @@ class SecurityController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
 
-                // Check if the user is already authenticated
-                if ($this->getUser()) {
-                    return $this->redirectToRoute('home_ticket');
-                }
-        
-        
+        // Check if the user is already authenticated
+        if ($this->getUser()) {
+            return $this->redirectToRoute('app_ticket');
+        }
+
+
         return $this->render('security/login.html.twig', [
             'last_username' => $authenticationUtils->getLastUsername(),
             'error' => $authenticationUtils->getLastAuthenticationError()
@@ -42,7 +42,4 @@ class SecurityController extends AbstractController
     {
         return $this->redirectToRoute('home_index');
     }
-
 }
-
-

@@ -15,7 +15,7 @@
 			
 			{# Flash message votre ticket a ete cree avec succes #}
 				{% for message in app.flashes('success') %}
-					<div class="alert alert-succes"> {{ message }}
+					<div class="alert alert-success mt-4"> {{ message }}
 				</div>
 			{% endfor %}
 
@@ -52,7 +52,7 @@
 								<a href="{{ path ('app_ticket_edition', {'id': ticket.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
 							<td>
-								<a href="{{ path ('app_ticket_delete', {id:ticket.id}) }}" class="btn btn-warning">Supprimer</a>
+								<a href="{{ path ('app_ticket_delete', {id:ticket.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce ticket ?')" class="btn btn-danger">Supprimer</a>
 
 							</td>
 
@@ -62,7 +62,7 @@
 			</table>
 
 			{# display navigation #}
-			<div class="navigation">
+			<div class="navigation d-flex justify-content-center">
 				{{ knp_pagination_render(tickets) }}
 			</div>
 		{% else %}

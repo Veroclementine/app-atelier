@@ -38,7 +38,7 @@ class TicketTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertSelectorTextContains('div.alert.alert-succes', 'Votre ticket a été créé avec succès !');
+        $this->assertSelectorTextContains('div.alert.alert-success', 'Votre ticket a été créé avec succès !');
 
         $this->assertRouteSame('app_ticket');
     }
@@ -78,7 +78,7 @@ class TicketTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertSelectorTextContains('div.alert.alert-succes', 'ticket modifié correctement');
+        $this->assertSelectorTextContains('div.alert.alert-success', 'ticket modifié correctement');
 
         $this->assertRouteSame('app_ticket');
     }
@@ -107,7 +107,7 @@ class TicketTest extends WebTestCase
 
         $client->followRedirect();
 
-        $this->assertSelectorTextContains('div.alert.alert-succes', 'Votre ticket a été supprimée !');
+        $this->assertSelectorTextContains('div.alert.alert-success', 'Votre ticket a été supprimée !');
 
         $this->assertRouteSame('app_ticket');
     }

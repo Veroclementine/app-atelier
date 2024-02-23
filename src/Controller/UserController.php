@@ -8,11 +8,13 @@ use App\Form\UserPasswordType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Security;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Core\Security;
+
+
 
 class UserController extends AbstractController
 {
@@ -64,48 +66,57 @@ class UserController extends AbstractController
     }
 
     //Edit password code a revoir
-   #[Route('/user/edition-mot-de-passe/{id}', name: 'user_edit_password', methods: ['GET', 'POST'])]
-public function editPassword(
-    Request $request,
-    Security $security,
-    UserPasswordHasherInterface $hasher,
-    EntityManagerInterface $manager,
+    #[Route('/user/edition-mot-de-passe/{id}', name: 'user_edit_password', methods: ['GET', 'POST'])]
+    public function editPassword(
+        Request $request,
+        Security $security,
+        UserPasswordHasherInterface $hasher,
+        EntityManagerInterface $manager,
+        string $id // Ajoutez cette ligne pour obtenir l'id de l'URL
+    ): Response {
+        $user = $security->getUser();
 
-): Response {
-    $user = $security->getUser();
+        if (!$user instanceof User) {
+            throw new \LogicException('Utilisateur pas authentifié !');
+        }
 
-    if (!$user instanceof User) {
-        throw new \LogicException('User is not authenticated!');
-    }
-
-    $form = $this->createForm(UserPasswordType::class);
-    $form->handleRequest($request);
-
-    if ($form->isSubmitted() && $form->isValid()) {
-        if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
-            $user->setPassword(
-                $hasher->hashPassword($user, $form->getData()['newPassword'])
-            );
-
-            $manager->persist($user);
-            $manager->flush();
-
-            $this->addFlash(
-                'success',
-                'Le mot de passe a été modifié.'
-            );
-
-            return $this->redirectToRoute('app_ticket');
-        } else {
+        // Check if the current user matches the ID in the URL
+        if ($user->getId() != $id) {
             $this->addFlash(
                 'warning',
-                'Le mot de passe renseigné est incorrect.'
+                "Vous n'êtes pas autorisé à modifier le mot de passe d'un autre utilisateur."
             );
+            return $this->redirectToRoute('user_edit_password', ['id' => $user->getId()]);
         }
-    }
 
-    return $this->render('user/edit_password.html.twig', [
-        'form' => $form->createView()
-    ]);
-}
+        $form = $this->createForm(UserPasswordType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if ($hasher->isPasswordValid($user, $form->getData()['plainPassword'])) {
+                $user->setPassword(
+                    $hasher->hashPassword($user, $form->getData()['newPassword'])
+                );
+
+                $manager->persist($user);
+                $manager->flush();
+
+                $this->addFlash(
+                    'success',
+                    'Le mot de passe a été modifié.'
+                );
+
+                return $this->redirectToRoute('app_ticket');
+            } else {
+                $this->addFlash(
+                    'warning',
+                    'Le mot de passe renseigné est incorrect.'
+                );
+            }
+        }
+
+        return $this->render('user/edit_password.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 }

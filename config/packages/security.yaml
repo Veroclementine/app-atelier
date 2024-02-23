@@ -37,6 +37,7 @@ security:
           - { path: ^/admin, roles: ROLE_ADMIN }
           - { path: ^/category, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+          - { path: ^/ticket, roles: ROLE_USER }
           - { path: ^/ticket/newTicket, roles: ROLE_USER }
           - { path: ^/ticket/delete/[0-9]+$, roles: ROLE_USER }
 

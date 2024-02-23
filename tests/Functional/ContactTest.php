@@ -37,6 +37,6 @@ class ContactTest extends WebTestCase
         $client->followRedirect();
 
         //check message succes
-        $this->assertSelectorTextContains('div.alert.alert-succes', 'Votre message a été envoyé avec succès!');
+        $this->assertSelectorTextContains('div.alert.alert-success', 'Votre message a été envoyé avec succès!');
     }
 }

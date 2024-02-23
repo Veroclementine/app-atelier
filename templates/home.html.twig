@@ -6,8 +6,9 @@
 {% block body %}
 	<head>
 		<title>Atelier-Desk</title>
-		<link rel="stylesheet" href="{{ asset('style.css') }}">
+		{# <link rel="stylesheet" href="{{ asset('style.css') }}"> #}
 	</head>
+	<body class="homepage-bg">
 	<div class="container mt-4">
 		<div class="jumbotron">
 			<h1 class="display-4">Bienvenue sur Atelier - Desk</h1>
@@ -16,6 +17,10 @@
 			<p>Pour commencer, rendez-vous sur la page de connexion pour utiliser l'application.</p>
 			<a class="btn btn-primary btn-lgz" href="{{ path('app_login') }}" role="button">Se connecter</a>
 		</div>
+
+		<!-- Inserting the image -->
+        {# <img src="{{ asset('../img/desk.jpg') }}" alt="Description of the image" style="width: 600px; height: auto; float: right; margin-right: 10px;"> #}
+
 
 		<!-- Agrega tu formulario de contacto aquí -->
 		<div class="mt-5">

@@ -1,29 +1,23 @@
 
 /* styles.css */
 
-/* Estilos para el fondo de la página */
 body {
-  /* Asegura que la imagen cubra todo el fondo */
-  background-image: url('../img/desk.jpg');
-  background-size: 100vh;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 0.9; /* Opacidad de la imagen, un valor entre 0 y 1 */
-}
-
-/* Estilos adicionales para el contenido */
-.container {
-  /* Centra el contenido verticalmente */
-  display: flex;
   flex-direction: column;
-  justify-content: left;
-  align-items: left;
-  height: 100vh; /* Ajusta la altura del contenedor al 100% del viewport */
+  display: flex;
+  min-height: 100vh;
+  justify-content: space-between;
+  /* background-image: url('../img/desk.jpg');
+  background-size: 50%;
+  background-position: right;
+  background-repeat: no-repeat;
+  opacity: 0.3; Opacidad de la imagen, un valor entre 0 y 1 */
+
 }
 
-.jumbotron {
-  /* Añade un poco de espacio entre el contenido y la imagen de fondo */
-  margin-bottom: 20px;
+
+/* Adjust the dropdown alignment */
+.dropdown-menu {
+  margin-top: 0; /* Remove default top margin */
 }
 
 h1, h3, p {

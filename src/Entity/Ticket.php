@@ -18,12 +18,12 @@ class Ticket
 
     #[ORM\Column(length: 255)]
     #[Assert\NotNull]
-    #[Assert\NotBlank( )]
+    #[Assert\NotBlank()]
     private ?string $name = null;
 
 
     #[ORM\Column(type: Types::TEXT)]
-    #[Assert\NotBlank( )]
+    #[Assert\NotBlank()]
     private ?string $description = null;
 
     #[ORM\Column]
@@ -123,12 +123,11 @@ class Ticket
         return $this;
     }
 
-//function pour gerer la data de creation et update automaticament
+    //function pour gerer la data de creation et update automaticament
     public function __construct()
     {
         $this->createAt = new \DateTimeImmutable;
         $this->updateAt = new \DateTimeImmutable();
-
     }
 
     public function getUser(): ?User
@@ -148,7 +147,7 @@ class Ticket
     {
         return $this->name;
     }
-    
+
 
     //function not use by now, but maybe in the future
     public function getTicketSolutions(): ?TicketSolutions
@@ -162,6 +161,4 @@ class Ticket
 
         return $this;
     }
-
-
 }

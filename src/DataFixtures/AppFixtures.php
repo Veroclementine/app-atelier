@@ -27,13 +27,10 @@ class AppFixtures extends Fixture
         $this->faker = Factory::create('fr_FR');
     }
 
-
     public function load(ObjectManager $manager): void
     {
-
         //Users 
         $users = [];
-
         //create admin and put in user table
         $admin = new User();
         $admin->setName('Admin')
@@ -44,8 +41,6 @@ class AppFixtures extends Fixture
 
         $users[] = $admin;
         $manager->persist($admin);
-
-
 
         for ($i = 0; $i < 10; $i++) {
             $user = new User();
@@ -89,10 +84,10 @@ class AppFixtures extends Fixture
         //ticket_solutions
 
         $ticketSolutions = [];
-        for ($i = 0; $i < 8; $i++) { 
+        for ($i = 0; $i < 8; $i++) {
             $ticketSolution = new TicketSolutions();
             $ticketSolution->setName($this->faker->words(3, true))
-            ->setDescription($this->faker->text(300));
+                ->setDescription($this->faker->text(300));
 
             // Asociar una solución a un ticket existente
             $randomTicket = $tickets[array_rand($tickets)];
@@ -107,10 +102,10 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 10; $i++) {
             $client = new Client();
             $client->setUsername($this->faker->userName())
-                   ->setEmail($this->faker->email())
-                   ->setTelephone($this->faker->phoneNumber())
-                   ->setCity($this->faker->city())
-                   ->setAddress($this->faker->address());
+                ->setEmail($this->faker->email())
+                ->setTelephone($this->faker->phoneNumber())
+                ->setCity($this->faker->city())
+                ->setAddress($this->faker->address());
 
             $clients[] = $client;
             $manager->persist($client);
@@ -120,12 +115,12 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 20; $i++) {
             $equipment = new Equipment();
             $equipment->setName($this->faker->word())
-                      ->setBrand($this->faker->word())
-                      ->setModel($this->faker->word())
-                      ->setPurchaseDate($this->faker->dateTimeBetween('-2 years', 'now'))
-                      ->setWarrantyExpiry($this->faker->dateTimeBetween('now', '+3 years'))
-                      ->setSerialNumber($this->faker->ean13())
-                      ->setClient($clients[array_rand($clients)]);
+                ->setBrand($this->faker->word())
+                ->setModel($this->faker->word())
+                ->setPurchaseDate($this->faker->dateTimeBetween('-2 years', 'now'))
+                ->setWarrantyExpiry($this->faker->dateTimeBetween('now', '+3 years'))
+                ->setSerialNumber($this->faker->ean13())
+                ->setClient($clients[array_rand($clients)]);
 
             $manager->persist($equipment);
         }
@@ -144,7 +139,6 @@ class AppFixtures extends Fixture
 
             $manager->persist($contact);
         }
-
 
         $manager->flush();
     }

@@ -33,7 +33,7 @@ class TicketType extends AbstractType
                 'constraints' => [
                     new Assert\NotBlank()
                 ]
-                ])
+            ])
 
 
             ->add('description', TextareaType::class, [
@@ -53,7 +53,7 @@ class TicketType extends AbstractType
             // ->add('createAt')
             // ->add('updateAt')
             ->add('priority', IntegerType::class, [
-                'attr' =>[
+                'attr' => [
                     'class' => 'form-control',
                     'min' => 1,
                     'max' => 3
@@ -64,33 +64,36 @@ class TicketType extends AbstractType
                 ],
                 'constraints' => [
                     new Assert\Positive()
-                    ]
+                ]
 
             ])
 
             /**
              * appel a l'entity Category (EntityType) pour recuperer les donnes avec une query 
              */
-            ->add('category', EntityType::class, [
-                'class' => Category::class,
-                'query_builder' => function (CategoryRepository $rep) {
-                    return $rep->createQueryBuilder('c')
-                        ->orderBy('c.name', 'ASC');
-                },
-                'choice_label' => "name",
-                'multiple' => false,
-            
-                'attr' =>[
-                    'class' => 'form-select'
-                ],
+            ->add(
+                'category',
+                EntityType::class,
+                [
+                    'class' => Category::class,
+                    'query_builder' => function (CategoryRepository $rep) {
+                        return $rep->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC');
+                    },
+                    'choice_label' => "name",
+                    'multiple' => false,
 
-                'label' => 'Category',
-                'label_attr' => [
-                    'class' => 'form-label mt-4'
-                ],
-            ]
+                    'attr' => [
+                        'class' => 'form-select'
+                    ],
 
-                )
+                    'label' => 'Category',
+                    'label_attr' => [
+                        'class' => 'form-label mt-4'
+                    ],
+                ]
+
+            )
 
             ->add('submit', SubmitType::class, [
                 'attr' => [

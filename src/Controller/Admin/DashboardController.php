@@ -28,7 +28,6 @@ class DashboardController extends AbstractDashboardController
         return Dashboard::new()
             ->setTitle('App Atelier')
             ->renderContentMaximized();
-
     }
 
     public function configureMenuItems(): iterable
@@ -42,7 +41,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Equipement', 'fas fa-laptop', Equipment::class);
         yield MenuItem::linkToCrud('Demandes de contact', 'fas fa-envelope', Contact::class);
 
-
+        // Add a link to return to the homepage
+        yield MenuItem::linkToUrl('Accueil', 'fas fa-home', '/');
 
         // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
     }

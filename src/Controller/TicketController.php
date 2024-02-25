@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
 
 
@@ -35,7 +34,7 @@ class TicketController extends AbstractController
         $tickets = $paginator->paginate(
             $ticketRepository->findBy(['user' => $this->getUser()]), //method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
             $request->query->getInt('page', 1), /*page number*/
-            10 /*limit per page*/
+            8 /*limit per page*/
         );
         //condition pour savoir s'il y a des tickets ou pas
         if (empty($tickets)) {

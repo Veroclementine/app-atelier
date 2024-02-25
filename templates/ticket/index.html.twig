@@ -4,21 +4,26 @@
 {% endblock %}
 
 {% block body %}
-
-	<div
-		class="container">
-		{# condition pour montrer une reponse si'l n'ai pas de tickets #}
-		{% if not tickets.items is same as([]) %}
-			<h1>Tickets</h1>
-
-				<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
-			
-			{# Flash message votre ticket a ete cree avec succes #}
-				{% for message in app.flashes('success') %}
-					<div class="alert alert-success mt-4"> {{ message }}
-					</div>
+	<div class="container mt-2">
+				{# Flash message votre ticket a ete cree avec succes #}
+			{% for message in app.flashes('success') %}
+				<div class="alert alert-success">
+					{{ message }}
+				</div>
 			{% endfor %}
 
+		{% if tickets|length > 0 %}
+
+			<a href="{{ path('app_ticket_new') }}" class="btn btn-primary">Créer nouveau Ticket</a>
+
+
+			<div class="count mt-2">
+				Il y a
+				{{ tickets.getTotalItemCount }}
+				tickets
+
+			</div>
+			<h1>Tickets</h1>
 
 			<table class="table table-hover mt-4">
 				<thead>
@@ -72,5 +77,4 @@
 		{% endif %}
 
 	</div>
-
 {% endblock %}

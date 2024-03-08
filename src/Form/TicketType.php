@@ -2,17 +2,20 @@
 
 namespace App\Form;
 
-use App\Entity\Category;
 use App\Entity\Ticket;
+use App\Entity\Category;
+use App\Entity\Equipment;
 use App\Repository\CategoryRepository;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Repository\EquipmentRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 class TicketType extends AbstractType
@@ -87,13 +90,52 @@ class TicketType extends AbstractType
                         'class' => 'form-select'
                     ],
 
-                    'label' => 'Category',
+                    'label' => 'Categorie',
                     'label_attr' => [
                         'class' => 'form-label mt-4'
                     ],
                 ]
 
             )
+
+                        /**
+             * appel a l'entity Category (EntityType) pour recuperer les donnes avec une query 
+             */
+            ->add(
+                'equipment',
+                EntityType::class,
+                [
+                    'class' => Equipment::class,
+                    'query_builder' => function (EquipmentRepository $repo) {
+                        return $repo->createQueryBuilder('c')
+                            ->orderBy('c.name', 'ASC');
+                    },
+                    'choice_label' => "name",
+                    'multiple' => false,
+
+                    'attr' => [
+                        'class' => 'form-select'
+                    ],
+
+                    'label' => 'Equipement',
+                    'label_attr' => [
+                        'class' => 'form-label mt-4'
+                    ],
+                ]
+
+            )
+
+            ->add('isOpen', CheckboxType::class, [
+                'attr' => [
+                    'class' => 'form-check-input',
+                ],
+                'required' => false,
+                'label' => ' Ticket ouvert ? ',
+                'label_attr' => [
+                    'class' => 'form-check-label'
+                ]
+            ])
+
 
             ->add('submit', SubmitType::class, [
                 'attr' => [

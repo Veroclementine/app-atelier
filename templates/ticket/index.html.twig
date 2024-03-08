@@ -4,13 +4,14 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-2">
-				{# Flash message votre ticket a ete cree avec succes #}
-			{% for message in app.flashes('success') %}
-				<div class="alert alert-success">
-					{{ message }}
-				</div>
-			{% endfor %}
+	<div
+		class="container mt-2">
+		{# Flash message votre ticket a ete cree avec succes #}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
 
 		{% if tickets|length > 0 %}
 
@@ -31,6 +32,7 @@
 						<th scope="col">ID</th>
 						<th scope="col">Nom</th>
 						<th scope="col">Priorité</th>
+						<th scope="col">Equipement</th>
 						<th scope="col">Date de création</th>
 						<th scope="col">Edition</th>
 						<th scope="col">Suppresion</th>
@@ -43,14 +45,9 @@
 						<tr class="table-primary">
 							<th scope="row">{{ticket.id}}</th>
 							<td>{{ticket.name}}</td>
-							<td>
-								{# Condition message si la priorite is null #}
-								{% if ticket.priority is null %}
-									Non renseigné
-								{% else %}
-									{{ticket.priority}}
-								{% endif %}
-							</td>
+							<td>{{ ticket.priority ?? 'Non renseigné' }}</td>
+							<td>{{ ticket.equipment ?? 'Non renseigné' }}</td>
+
 							<td>{{ticket.createAt|date('d/m/Y') }}</td>
 
 							<td>

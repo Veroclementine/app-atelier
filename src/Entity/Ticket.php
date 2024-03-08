@@ -46,6 +46,12 @@ class Ticket
     #[ORM\ManyToOne(inversedBy: 'tickets')]
     private ?TicketSolutions $ticketSolutions = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $isOpen = null;
+
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    private ?Equipment $equipment = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -158,6 +164,30 @@ class Ticket
     public function setTicketSolutions(?TicketSolutions $ticketSolutions): static
     {
         $this->ticketSolutions = $ticketSolutions;
+
+        return $this;
+    }
+
+    public function isIsOpen(): ?bool
+    {
+        return $this->isOpen;
+    }
+
+    public function setIsOpen(bool $isOpen): static
+    {
+        $this->isOpen = $isOpen;
+
+        return $this;
+    }
+
+    public function getEquipment(): ?Equipment
+    {
+        return $this->equipment;
+    }
+
+    public function setEquipment(?Equipment $equipment): static
+    {
+        $this->equipment = $equipment;
 
         return $this;
     }

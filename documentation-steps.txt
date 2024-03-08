@@ -15,6 +15,7 @@ para saber qué version de symfony uso: php bin/console --version
 	-created At
 	-update At
 	-priority (agregue una constraint para que sea entre 1 y 3)
+	TODO: Ajouter IsClosed
 
     
 3- Category
@@ -361,12 +362,20 @@ Function edit en ticket NO FUNCIONABA al editar, al final el error estaba en el 
 	Mise a jour de menu x les users OK
 	Mise a jour menu x les anonymes OK
 	
-	Problema con ISGRANTED no funciona, en reemplazo utlicé el metodo AccesDeniedException pour restreindre l'acces aux routes de edit ticket et edit utilisateur
-	
+	Problema con ISGRANTED no funciona
+
+Solution antigua metodo AccesDeniedException
 	Ej de condition para restringir la edicion de un ticket que no es el suyo:
 	       // Check if the logged-in user is the owner of the ticket
         if ($ticket->getUser() !== $this->getUser()) {
             throw new AccessDeniedException('Pas autorisé à modifier ce ticket');
+        }
+		
+	***Eliminé la opcion acces denied y puse un ocidgo mas sencillo para evitar que un user modifique un ticket que no es suyo
+        // Check if the logged-in user is the owner of the ticket
+        if ($ticket->getUser() !== $this->getUser()) {
+            $this->addFlash('warning', 'Vous n\'êtes pas autorisé à modifier ce ticket.');
+            return $this->redirectToRoute('app_ticket');
         }
 
 	
@@ -607,6 +616,33 @@ Add fields: City,address, telephone and delete password
 Creation entity Equipment
 Equipment a une relation avec clients
 Entity Client et Equipment serait gestione depuis EasyAdmin, seulement le admin peux gerer ça.
+TODO: Ajouter description a equipment, pas urgent, si je le temp.
 
-creation query pour montre le dernier ticket solution
+
+creation query pour montre le dernier ticket solution OK
+
+-----------------
+Solution au problem quand tu delete a category lie a un ticket:
+
+Dans mon entity ticket j'ai ajoute name: "category_id", referencedColumnName: "id", onDelete: "SET NULL" 
+et apres actualisé la BD avec une migration et maintenant je peux suprimé une category sans probleme et le ticket reste ok
+
+/**
+ * @ORM\Entity
+ */
+class Ticket
+{
+    // ...
+
+    #[ORM\ManyToOne(inversedBy: 'tickets')]
+    #[ORM\JoinColumn(name: "category_id", referencedColumnName: "id", onDelete: "SET NULL")]
+    private ?Category $category = null;
+
+    // ...
+}
+
+
+Alert quand un utilisateur veux supprimer un ticket OK
+TODO: mettre un num de telephone au form de contact
+Mettre recatchap dans le formulaire de contact
 

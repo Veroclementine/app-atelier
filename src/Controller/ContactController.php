@@ -30,7 +30,7 @@ class ContactController extends AbstractController
             $manager->persist($contact);
             $manager->flush();
 
-            //Email - appel MailService
+            //Email - call to the service: MailService.php
             $mailService->sendEmail(
                 $contact->getEmail(),
                 $contact->getSubject(),

@@ -17,6 +17,7 @@ class TicketTest extends KernelTestCase
         $ticket = new Ticket();
         $ticket->setName('Ticket #1')
             ->setDescription('Description #1')
+            ->setIsOpen(true)
             ->setCreateAt(new \DateTimeImmutable())
             ->setUpdateAt(new \DateTimeImmutable())
             ->setPriority(1);

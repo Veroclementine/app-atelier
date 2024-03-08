@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EquipmentRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -35,6 +37,19 @@ class Equipment
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'leasedEquipment')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Client $client;
+
+    #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: Ticket::class)]
+    private Collection $tickets;
+
+    public function __toString(): string
+    {
+        return $this->name;
+    }
+
+    public function __construct()
+    {
+        $this->tickets = new ArrayCollection();
+    }
 
     public function getClient(): ?Client
     {
@@ -122,6 +137,36 @@ class Equipment
     public function setSerialNumber(?string $serial_number): static
     {
         $this->serial_number = $serial_number;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ticket>
+     */
+    public function getTickets(): Collection
+    {
+        return $this->tickets;
+    }
+
+    public function addTicket(Ticket $ticket): static
+    {
+        if (!$this->tickets->contains($ticket)) {
+            $this->tickets->add($ticket);
+            $ticket->setEquipment($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTicket(Ticket $ticket): static
+    {
+        if ($this->tickets->removeElement($ticket)) {
+            // set the owning side to null (unless already changed)
+            if ($ticket->getEquipment() === $this) {
+                $ticket->setEquipment(null);
+            }
+        }
 
         return $this;
     }

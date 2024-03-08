@@ -71,11 +71,24 @@ class AppFixtures extends Fixture
             $ticket->setName($this->faker->words(3, true))
                 ->setDescription($this->faker->text(300))
                 ->setPriority(mt_rand(0, 1) == 1 ? mt_rand(1, 3) : null)
-                ->setUser($users[mt_rand(0, count($users) - 1)]);
+                ->setUser($users[mt_rand(0, count($users) - 1)])
+                ->setIsOpen(mt_rand(0, 1) == 1);
 
             // Seleccionar una categoría aleatoria del array de categorías
             $randomCategory = $categories[array_rand($categories)];
             $ticket->setCategory($randomCategory);
+
+                // Obtener todos los equipos disponibles
+    $equipments = $manager->getRepository(Equipment::class)->findAll();
+
+    if (!empty($equipments)) {
+        // Asignar un equipo aleatorio
+        $randomEquipment = $equipments[array_rand($equipments)];
+        $ticket->setEquipment($randomEquipment);
+    } else {
+        // Si no hay equipos disponibles, asigna null al equipamiento del ticket
+        $ticket->setEquipment(null);
+    }
 
             $tickets[] = $ticket;
             $manager->persist($ticket);

@@ -46,6 +46,7 @@ class TicketController extends AbstractController
         return $this->render('ticket/index.html.twig', [
             'tickets' => $tickets,
             'newTicketButton' => $newTicketButton,
+            'showIsOpen' => true,
         ]);
     }
 

@@ -10,7 +10,7 @@ commande pour lancer le test:
 php bin/phpunit
 
 
-Pour drop or validate la BD sur test enviroment
+Pour drop la BD sur test enviroment
 	php bin/console d:d:d --force --if-exists --env=test
 Creer la BD	
 	php bin/console --env=test doctrine:database:create
@@ -19,7 +19,7 @@ Creer les tables et colonnes
 php bin/console --env=test doctrine:schema:create  
 
 Envoyer les fixtures
-	php bin/console d:f:l -env=test
+	php bin/console d:f:l --env=test
 
 
 

@@ -70,6 +70,9 @@ class TicketTest extends WebTestCase
             'ticket[description]' => "ticket description",
             'ticket[priority]' => intval(1),
             'ticket[category]' => "4",
+            'ticket[equipment]' => "15",
+            'ticket[isOpen]' => "1",
+
         ]);
 
         $client->submit($form);

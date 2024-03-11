@@ -33,6 +33,7 @@
 						<th scope="col">Nom</th>
 						<th scope="col">Priorité</th>
 						<th scope="col">Equipement</th>
+						<th scope="col">Ticket ouvert?</th>
 						<th scope="col">Date de création</th>
 						<th scope="col">Edition</th>
 						<th scope="col">Suppresion</th>
@@ -47,6 +48,7 @@
 							<td>{{ticket.name}}</td>
 							<td>{{ ticket.priority ?? 'Non renseigné' }}</td>
 							<td>{{ ticket.equipment ?? 'Non renseigné' }}</td>
+							<td>{{ ticket.isOpen ? 'Oui' : 'Non' }}</td> <!-- Muestra el estado de isOpen -->
 
 							<td>{{ticket.createAt|date('d/m/Y') }}</td>
 

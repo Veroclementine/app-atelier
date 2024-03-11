@@ -11,7 +11,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\HasLifecycleCallbacks]
 #[ORM\Entity(repositoryClass: TicketSolutionsRepository::class)]
-#[UniqueEntity('name')]
+#[UniqueEntity(fields: ['name'])]
 class TicketSolutions
 {
     #[ORM\Id]

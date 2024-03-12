@@ -27,21 +27,24 @@ class TicketController extends AbstractController
      */
     #[Route('/ticket', name: 'app_ticket', methods: ['GET'])]
     public function index(
-        TicketRepository $ticketRepository,
         PaginatorInterface $paginator,
-        Request $request
+        Request $request,
+        EntityManagerInterface $entityManager
     ): Response {
-        $tickets = $paginator->paginate(
-            $ticketRepository->findBy(['user' => $this->getUser()]), //method qui récupère les tickets associés à l'utilisateur authentifié dans l'application.
-            $request->query->getInt('page', 1), /*page number*/
-            8 /*limit per page*/
-        );
-        //condition pour savoir s'il y a des tickets ou pas
-        if (empty($tickets)) {
-            $newTicketButton = true;
-        } else {
-            $newTicketButton = false;
-        }
+    // Obtener todos los tickets del usuario autenticado y ordenar por prioridad
+    $query = $entityManager->createQuery(
+        'SELECT t FROM App\Entity\Ticket t 
+        WHERE t.user = :user
+        ORDER BY t.priority ASC'
+    )->setParameter('user', $this->getUser());
+
+    $tickets = $paginator->paginate(
+        $query->getResult(),
+        $request->query->getInt('page', 1), /*page number*/
+        8 /*limit per page*/
+    );
+ // Verificar si hay tickets
+ $newTicketButton = $tickets->count() === 0;
 
         return $this->render('ticket/index.html.twig', [
             'tickets' => $tickets,

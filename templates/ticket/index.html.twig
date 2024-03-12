@@ -22,49 +22,76 @@
 				Il y a
 				{{ tickets.getTotalItemCount }}
 				tickets
-
 			</div>
-			<h1>Tickets</h1>
 
-			<table class="table table-hover mt-4">
-				<thead>
-					<tr>
-						<th scope="col">ID</th>
-						<th scope="col">Nom</th>
-						<th scope="col">Priorité</th>
-						<th scope="col">Equipement</th>
-						<th scope="col">Ticket ouvert?</th>
-						<th scope="col">Date de création</th>
-						<th scope="col">Edition</th>
-						<th scope="col">Suppresion</th>
+			<h1>Tickets Ouverts</h1>
+<table class="table table-hover mt-4">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Priorité</th>
+            <th scope="col">Equipement</th>
+            <th scope="col">Ticket ouvert?</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Edition</th>
+            <th scope="col">Suppresion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets|filter(ticket => ticket.isOpen) %}
+            <tr class="table-primary">
+                <th scope="row">{{ ticket.id }}</th>
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.priority ?? 'Non renseigné' }}</td>
+                <td>{{ ticket.equipment ?? 'Non renseigné' }}</td>
+                <td>{{ ticket.isOpen ? 'Oui' : 'Non' }}</td>
+                <td>{{ ticket.createAt|date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ path('app_ticket_edition', {'id': ticket.id}) }}" class="btn btn-info">Modifier</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_ticket_delete', {id: ticket.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce ticket ?')" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
-					</tr>
-				</thead>
-				<tbody>
-
-					{% for ticket in tickets %}
-						<tr class="table-primary">
-							<th scope="row">{{ticket.id}}</th>
-							<td>{{ticket.name}}</td>
-							<td>{{ ticket.priority ?? 'Non renseigné' }}</td>
-							<td>{{ ticket.equipment ?? 'Non renseigné' }}</td>
-							<td>{{ ticket.isOpen ? 'Oui' : 'Non' }}</td> <!-- Muestra el estado de isOpen -->
-
-							<td>{{ticket.createAt|date('d/m/Y') }}</td>
-
-							<td>
-								<a href="{{ path ('app_ticket_edition', {'id': ticket.id}) }}" class="btn btn-info">Modifier</a>
-							</td>
-							<td>
-								<a href="{{ path ('app_ticket_delete', {id:ticket.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce ticket ?')" class="btn btn-danger">Supprimer</a>
-
-							</td>
-
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-
+{# Tickets cerrados #}
+<h1>Tickets Fermés</h1>
+<table class="table table-hover mt-4">
+    <thead>
+        <tr>
+            <th scope="col">ID</th>
+            <th scope="col">Nom</th>
+            <th scope="col">Priorité</th>
+            <th scope="col">Equipement</th>
+            <th scope="col">Ticket ouvert?</th>
+            <th scope="col">Date de création</th>
+            <th scope="col">Edition</th>
+            <th scope="col">Suppresion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for ticket in tickets|filter(ticket => not ticket.isOpen) %}
+            <tr class="table-primary">
+                <th scope="row">{{ ticket.id }}</th>
+                <td>{{ ticket.name }}</td>
+                <td>{{ ticket.priority ?? 'Non renseigné' }}</td>
+                <td>{{ ticket.equipment ?? 'Non renseigné' }}</td>
+                <td>{{ ticket.isOpen ? 'Oui' : 'Non' }}</td>
+                <td>{{ ticket.createAt|date('d/m/Y') }}</td>
+                <td>
+                    <a href="{{ path('app_ticket_edition', {'id': ticket.id}) }}" class="btn btn-info">Modifier</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_ticket_delete', {id: ticket.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce ticket ?')" class="btn btn-danger">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
 			{# display navigation #}
 			<div class="navigation d-flex justify-content-center">
 				{{ knp_pagination_render(tickets) }}

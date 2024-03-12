@@ -7,6 +7,8 @@
 /public/bundles/
 /var/
 /vendor/
+/.env.test/
+
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -25,3 +27,6 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+/deploiement1.txt/
+/documentation-steps.txt/

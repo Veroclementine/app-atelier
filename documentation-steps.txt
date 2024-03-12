@@ -45,7 +45,9 @@ para saber qué version de symfony uso: php bin/console --version
 	-warranty_expiration
 	-serial_number
 
-	
+
+Probl cache
+php bin/console cache:clear --env=prod
 	
 Define the relationships between entities:
 Customer and Ticket: Add a ManyToOne relationship from the Ticket entity to the Customer entity. This means many tickets belong to one customer.

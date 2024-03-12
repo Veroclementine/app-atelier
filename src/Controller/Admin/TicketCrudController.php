@@ -40,8 +40,9 @@ class TicketCrudController extends AbstractCrudController
             TextField::new('name'),
             TextEditorField::new('description'),
             AssociationField::new('user')
-                ->formatValue(function ($value, $entity) {
-                return $entity->getUser()->getName();
+            ->formatValue(function ($value, $entity) {
+                $user = $entity->getUser();
+                return $user ? $user->getName() : 'N/A';
             }),
             AssociationField::new('category'),
             AssociationField::new('equipment'),
@@ -53,11 +54,6 @@ class TicketCrudController extends AbstractCrudController
         ];
     }
 
-    //for remove Create new ticket button Because only technicies can create tickets
-    // public function configureActions(Actions $actions): Actions
-    // {
-    //     return $actions
-    //         ->disable(Action::NEW);
-    // }
+
     
 }

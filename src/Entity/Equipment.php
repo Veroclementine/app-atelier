@@ -35,7 +35,7 @@ class Equipment
     private ?string $serial_number = null;
 
     #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'leasedEquipment')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "client_id", referencedColumnName: "id", onDelete: "SET NULL")]
     private ?Client $client;
 
     #[ORM\OneToMany(mappedBy: 'equipment', targetEntity: Ticket::class)]

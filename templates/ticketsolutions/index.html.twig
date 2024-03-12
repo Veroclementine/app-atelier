@@ -34,7 +34,6 @@
 						<th scope="col">Description</th>
 						<th scope="col">Date de création</th>
 						<th scope="col">Edition</th>
-						<th scope="col">Suppresion</th>
 
 					</tr>
 				</thead>
@@ -50,10 +49,7 @@
 							<td>
 								<a href="{{ path ('app_ticketsolutions_edit', {'id': ticketsolution.id}) }}" class="btn btn-info">Modifier</a>
 							</td>
-							<td>
-								<a href="{{ path ('app_ticketsolutions_delete', {id:ticketsolution.id}) }}" onclick="return confirm('Voulez-vous vraiment supprimer ce solution ?')" class="btn btn-danger">Supprimer</a>
 
-							</td>
 
 						</tr>
 					{% endfor %}

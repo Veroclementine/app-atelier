@@ -42,7 +42,7 @@ class Ticket
     private ?int $priority = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(name: "user_id", referencedColumnName: "id", onDelete: "SET NULL")]
     private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'tickets')]

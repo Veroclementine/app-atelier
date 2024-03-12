@@ -45,6 +45,7 @@ para saber qué version de symfony uso: php bin/console --version
 	-warranty_expiration
 	-serial_number
 
+<<<<<<< HEAD
 
 Probl cache
 php bin/console cache:clear --env=prod
@@ -648,3 +649,5 @@ Alert quand un utilisateur veux supprimer un ticket OK
 TODO: mettre un num de telephone au form de contact
 Mettre recatchap dans le formulaire de contact
 
+=======
+>>>>>>> b2a44a7c83cac4ae074fafeebcba7b98fa2e8342

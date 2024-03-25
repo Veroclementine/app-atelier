@@ -12,6 +12,8 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+
 
 
 
@@ -31,7 +33,7 @@ class TicketController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager
     ): Response {
-    // Obtener todos los tickets del usuario autenticado y ordenar por prioridad
+    // Obtenir tous les tickets de l'utilisateur authentifié et les trier par priorité
     $query = $entityManager->createQuery(
         'SELECT t FROM App\Entity\Ticket t 
         WHERE t.user = :user
@@ -41,9 +43,9 @@ class TicketController extends AbstractController
     $tickets = $paginator->paginate(
         $query->getResult(),
         $request->query->getInt('page', 1), /*page number*/
-        8 /*limit per page*/
+        6 /*limit per page*/
     );
- // Verificar si hay tickets
+ // Verification tickets
  $newTicketButton = $tickets->count() === 0;
 
         return $this->render('ticket/index.html.twig', [
@@ -170,4 +172,30 @@ class TicketController extends AbstractController
 
         return $this->redirectToRoute('app_ticket');
     }
+
+    /**
+     * Controller for show tickets
+     */
+    #[Route('/ticket/{id}', name: 'ticket_show', methods: ['GET'])]
+    public function show(int $id, TicketRepository $ticketRepository, AuthorizationCheckerInterface $authorizationChecker): Response
+    {
+        // Verificar si el usuario actual tiene el rol ROLE_ADMIN
+        if (!$authorizationChecker->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
+    
+        // Buscar el ticket por ID
+        $ticket = $ticketRepository->find($id);
+    
+        if (!$ticket) {
+            throw $this->createNotFoundException('Ticket not found.');
+        }
+    
+        return $this->render('ticket/show.html.twig', [
+            'ticket' => $ticket,
+        ]);
+    }
+
+    
 }
+

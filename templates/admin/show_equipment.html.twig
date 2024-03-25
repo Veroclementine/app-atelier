@@ -1,0 +1,13 @@
+{% extends '@EasyAdmin/layout.html.twig' %}
+
+{% block body_id 'client_show_equipment' %}
+
+{% block main %}
+    <h1>Equipement  {{ client.username }}</h1>
+
+    <ul>
+        {% for equip in equipment %}
+            <li>{{ equip.name }} - {{ equip.serial_number }}</li>
+        {% endfor %}
+    </ul>
+{% endblock %}

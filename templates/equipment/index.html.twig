@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Atelier Desk Tickets
+{% endblock %}
+
+{% block body %}
+
+<div class="container mt-2">
+	<h1>Matériel informatique</h1>
+
+	<table class="table table-bordered mt-4">
+		<thead>
+			<tr>
+				<th>Nom</th>
+				<th>Marque</th>
+				<th>Modèle</th>
+				<th>Date d'achat</th>
+				<th>Expiration de la garantie</th>
+				<th>Serial Number</th>
+				<th>Client</th>
+				<th>Tickets</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for equipment in equipments %}
+				<tr>
+					<td>{{ equipment.getName() }}</td>
+					<td>{{ equipment.getBrand() }}</td>
+					<td>{{ equipment.getModel() }}</td>
+					<td>{{ equipment.getPurchaseDate() ? equipment.getPurchaseDate().format('d-m-y') : '' }}</td>
+					<td>{{ equipment.getWarrantyExpiry() ? equipment.getWarrantyExpiry().format('d-m-y') : '' }}</td>
+					<td>{{ equipment.getSerialNumber() }}</td>
+					<td>{{ equipment.getClient() ? equipment.getClient().getUsername() : 'No client' }}</td>
+					<td>
+						{% if equipment.getTickets()|length > 0 %}
+							<ul>
+								{% for ticket in equipment.getTickets() %}
+									<li>
+                                        <a href="{{ path('app_ticket_show', {'id': ticket.getId()}) }}">{{ ticket.getId() }}</a>
+                                    </li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							No tickets
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	</div>
+{% endblock %}

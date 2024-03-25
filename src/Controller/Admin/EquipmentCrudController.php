@@ -36,13 +36,13 @@ class EquipmentCrudController extends AbstractCrudController
         return [
             IdField::new('id')
             ->hideOnForm(),
-            TextField::new('name'),
-            TextField::new('brand'),
-            TextField::new('model'),
-            DateTimeField::new('purchase_date'),
-            DateTimeField::new('warranty_expiry'),
-            TextField::new('serial_number'),
-            AssociationField::new('client')
+            TextField::new('name')->setLabel('Nom'),
+            TextField::new('brand')->setLabel('Marque'),
+            TextField::new('model')->setLabel('Modèle'),
+            DateTimeField::new('purchase_date')->setLabel('Date achat'),
+            DateTimeField::new('warranty_expiry')->setLabel('Expiration garantie'),
+            TextField::new('serial_number')->setLabel('Num de série'),
+            AssociationField::new('client')->setLabel('Client')
             ->hideOnIndex(),
 
             

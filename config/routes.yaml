@@ -13,3 +13,8 @@ app_logout:
 app_ticket_edit:
     path: /ticket/edit/{id}
     controller: App\Controller\TicketController::edit
+
+app_ticket_show:
+    path: /ticket/{id}
+    controller: App\Controller\TicketController::show
+    methods: GET

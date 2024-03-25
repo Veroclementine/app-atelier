@@ -28,7 +28,8 @@ class TicketTest extends WebTestCase
             'ticket[name]' => "New ticket",
             'ticket[description]' => "ticket description",
             'ticket[priority]' => intval(1),
-            'ticket[category]' => "4",
+            'ticket[category]' => "3",
+            'ticket[isOpen]' => true,
             
         ]);
 
@@ -70,8 +71,7 @@ class TicketTest extends WebTestCase
             'ticket[description]' => "ticket description",
             'ticket[priority]' => intval(1),
             'ticket[category]' => "4",
-            'ticket[equipment]' => "15",
-            'ticket[isOpen]' => "1",
+            'ticket[isOpen]' => true,
 
         ]);
 

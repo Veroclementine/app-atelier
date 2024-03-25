@@ -7,8 +7,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+
 
 class ClientCrudController extends AbstractCrudController
 {
@@ -37,13 +38,20 @@ class ClientCrudController extends AbstractCrudController
             ->hideOnForm(),
             TextField::new('username'),
             TextField::new('email'),
-            TextField::new('city'),
-            TextField::new('address'),
+            TextField::new('city')->setLabel('ville'),
+            TextField::new('address')->setLabel('addresse'),
             TextField::new('telephone'),  
             DateTimeField::new ('CreatedAt')
+            ->setLabel('Data création')
             ->setFormTypeOption('disabled', 'disabled')
-            ->hideOnIndex()
+            ->hideOnIndex(),
+            // Campo de asociación para mostrar los equipos vinculados
+        AssociationField::new('leasedEquipment')
+        ->hideOnForm() 
+        ->setLabel('Leased Equipment') 
         ];
     }
+    
+
     
 }

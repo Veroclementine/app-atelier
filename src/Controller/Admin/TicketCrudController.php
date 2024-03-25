@@ -37,19 +37,24 @@ class TicketCrudController extends AbstractCrudController
         return [
             IdField::new('id')
                 ->hideOnForm(),
-            TextField::new('name'),
-            TextEditorField::new('description'),
-            AssociationField::new('user')
+            TextField::new('name')->setLabel('Nom'),
+            TextEditorField::new('description')->setLabel('Description'),
+            AssociationField::new('user')->setLabel('Utilisateur')
             ->formatValue(function ($value, $entity) {
                 $user = $entity->getUser();
                 return $user ? $user->getName() : 'N/A';
             }),
-            AssociationField::new('category'),
-            AssociationField::new('equipment'),
-            BooleanField::new('isOpen'),
-            DateTimeField::new('createAt')
+            AssociationField::new('category')->setLabel('Categorie'),
+            AssociationField::new('equipment')->setLabel('Equipement')
+            ->formatValue(function ($value, $entity) {
+                $equipment = $entity->getEquipment();
+                return $equipment ? $equipment->getName() : 'N/A';
+            }),
+            BooleanField::new('isOpen')->setLabel('Ouvert'),
+            DateTimeField::new('createAt')->setLabel('Date création')
                 ->hideOnIndex()->setFormTypeOption('disabled', 'disabled'),
-            DateTimeField::new('updateAt')->hideOnIndex()
+            DateTimeField::new('updateAt')->setLabel('Date Update')
+                ->hideOnIndex()
                 ->setFormTypeOption('disabled', 'disabled')
         ];
     }

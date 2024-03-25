@@ -65,7 +65,7 @@ class UserController extends AbstractController
         ]);
     }
 
-    //Edit password code a revoir
+    //Edit password
     #[Route('/user/edition-mot-de-passe/{id}', name: 'user_edit_password', methods: ['GET', 'POST'])]
     public function editPassword(
         Request $request,
